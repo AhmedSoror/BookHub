@@ -8,7 +8,7 @@ import BookCard from "./BookCard";
 
 class HomeScreen extends Component {
   static navigationOptions = {
-    title: "Welcome to Book Hub!"
+    title: "All books"
   };
   constructor(props) {
     super(props);

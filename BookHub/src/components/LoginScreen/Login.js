@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as Google from "expo-google-app-auth";
-import axios from "axios";
-axios.defaults.baseURL =
-  "https://virtserver.swaggerhub.com/FootballProject/FieldHerosApp/1.0.0";
 
 import {
   View,

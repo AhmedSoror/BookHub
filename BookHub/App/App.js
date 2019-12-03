@@ -3,16 +3,37 @@ import { StyleSheet, Button, View, Text } from "react-native";
 import {
   createSwitchNavigator,
   createStackNavigator,
-  createAppContainer
+  createAppContainer,
+  createMaterialTopTabNavigator
 } from "react-navigation";
-import Login from "../src/componets/LoginScreen/Login";
-import Home from "../src/componets/PlaygroundHome/HomeScreen";
+import Login from "../src/components/LoginScreen/Login";
+import AllBooks from "../src/components/Home/AllBooks";
+import UserBooks from "../src/components/Home/UserBooks";
+
 
 import { connect } from "react-redux";
 
-const AppStack = createStackNavigator({ HomeScreen: Home });
+const AppStack = createStackNavigator({ HomeScreen: AllBooks });
 const AuthStack = createStackNavigator({ Login: Login });
-
+const AppNavigationContainer = createAppContainer(
+  createMaterialTopTabNavigator(
+    {
+      TabOne: {
+        screen: UserBooks
+      },
+      TabTwo: {
+        screen: AllBooks
+      }
+    },
+    {
+      tabBarOptions: {
+        tabStyle: {
+          marginTop:24
+        }
+      }
+    }
+  )
+);
 // const AuthenticationNavigator = createStackNavigator({
 //   SignIn: SignInScreen,
 //   ForgotPassword: ForgotPasswordScreen,
@@ -21,9 +42,11 @@ const AuthStack = createStackNavigator({ Login: Login });
 const AppNavigator = createSwitchNavigator(
   {
     Login: AuthStack,
-    HomeScreen: AppStack
+    HomeScreen: AppNavigationContainer,
+    // HomeScreen: AppStack,
   },
   {
+    // initialRouteName: "Login"
     initialRouteName: "HomeScreen"
   }
 );
