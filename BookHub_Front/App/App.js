@@ -19,10 +19,10 @@ const AppNavigationContainer = createAppContainer(
   createMaterialTopTabNavigator(
     {
       TabOne: {
-        screen: UserBooks
+        screen: AllBooks
       },
       TabTwo: {
-        screen: AllBooks
+        screen: UserBooks
       }
     },
     {
@@ -43,11 +43,10 @@ const AppNavigator = createSwitchNavigator(
   {
     Login: AuthStack,
     HomeScreen: AppNavigationContainer,
-    // HomeScreen: AppStack,
   },
   {
-    // initialRouteName: "Login"
-    initialRouteName: "HomeScreen"
+    initialRouteName: "Login"
+    // initialRouteName: "HomeScreen"
   }
 );
 

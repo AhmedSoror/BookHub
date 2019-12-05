@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import BookCard from "./BookCard";
+import AllBooksCard from "./AllBooksCard";
 
 class HomeScreen extends Component {
   static navigationOptions = {
@@ -33,7 +33,7 @@ class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <BookCard title="Oliver Twist" />
+        <AllBooksCard title="Oliver Twist" />
         
       </View>
     );

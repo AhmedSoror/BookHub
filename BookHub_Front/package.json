@@ -22,6 +22,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-native-calendar-picker": "^6.0.1",
     "react-native-calendars": "^1.212.0",
+    "react-native-circle-button": "^1.0.9",
     "react-native-collapse-view": "^1.0.0",
     "react-native-collapsible": "^1.5.1",
     "react-native-config": "^0.11.7",

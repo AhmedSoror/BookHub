@@ -11,22 +11,20 @@ import {
 
 import Collapsible from "react-native-collapsible";
 import { Button } from "react-native-elements";
-import ReservationDetails from "./ReservationDetails";
 
 const createBook = () => {
   item = {
     key: 0,
     name: `Oliver Twist Book`,
-    borrowerName: `Ali Mohammed`,
-    borrowerPhoneNumber: "01124365749",
-    returnDate: `18/5/2019`,
-    reserved: 1,
+    owner: `Ali Mohammed`,
+    reserved: 0,
+    ownerEmail: "ali@gmail.com",
     color: this.reserved == 1 ? "#757575" : "#75e900"
   };
   return item;
 };
 
-export default class BookCard extends Component {
+export default class SimpleDetailedCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,11 +34,6 @@ export default class BookCard extends Component {
     };
   }
 
-  hideDetails = () => {
-    this.setState({
-      reservationVisible: false
-    });
-  };
   showDetails(item) {
     this.setState({
       reservationVisible: true,
@@ -65,9 +58,9 @@ export default class BookCard extends Component {
         <Collapsible collapsed={this.state.isCollapsed}>
           <View style={styles.gridView}>
             <TouchableOpacity
-              style={[styles.itemContainer, { backgroundColor: item.reserved == 1 ? "#757575" : "#75e900" }]}
+              style={[styles.itemContainer, { backgroundColor: item.color }]}
               onPress={() => {
-                this.showDetails(item);
+                // this.showDetails(item);
               }}
             >
               <Text
@@ -76,7 +69,7 @@ export default class BookCard extends Component {
                   { color: this.state.book.reserved == 1 ? "white" : "black" }
                 ]}
               >
-                {`Borrower Name: ${item.borrowerName}`}
+                {`Owner: ${this.state.book.owner}`}
               </Text>
               <Text
                 style={[
@@ -84,24 +77,11 @@ export default class BookCard extends Component {
                   { color: this.state.book.reserved == 1 ? "white" : "black" }
                 ]}
               >
-                {`Phone Number: ${item.borrowerPhoneNumber}`}
-              </Text>
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.state.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {`Return date: ${this.state.book.returnDate}`}
+                {`Owner Email: ${this.state.book.ownerEmail}`}
               </Text>
             </TouchableOpacity>
           </View>
         </Collapsible>
-        <ReservationDetails
-          visible={this.state.reservationVisible}
-          onModalClosed={this.hideDetails}
-          item={this.state.book}
-        />
       </View>
     );
   }
@@ -130,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 80,
+    height: "100%",
     padding: 1,
     margin: 1,
     borderRadius: 5,
@@ -143,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
     margin: 1,
-    height: Dimensions.get("window").width
+    height: Dimensions.get("window").width // approximate a square
   },
 
   reservedItemContainer: {

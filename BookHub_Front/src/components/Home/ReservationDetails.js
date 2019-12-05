@@ -9,7 +9,7 @@ import {
   TextInput
 } from "react-native";
 
-export default class reservationDetails extends Component {
+export default class ReservationDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
