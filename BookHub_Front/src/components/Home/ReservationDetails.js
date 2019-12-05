@@ -15,8 +15,7 @@ export default class ReservationDetails extends Component {
     this.state = {
       borrowerName: "",
       borrowerEmail: "",
-      phoneNumber: "",
-      borrowDays: ""
+      phoneNumber: ""
     };
   }
 
@@ -25,8 +24,7 @@ export default class ReservationDetails extends Component {
       bookId: item.id,
       borrowerName: item.borrowerName,
       borrowerEmail: item.borrowerEmail,
-      phoneNumber: item.phoneNumber,
-      borrowDays: item.borrowDays
+      phoneNumber: item.phoneNumber
     };
     console.log(`${payload.borrowerName}///////${payload.borrowerName}`);
     await axios
@@ -72,7 +70,7 @@ export default class ReservationDetails extends Component {
     if (this.props.item) {
       modalContent = (
         <View>
-          <Text>{"Borrower name:"}</Text>
+          <Text style={styles.text}>{"Borrower name:"}</Text>
           <TextInput
             style={styles.input}
             autoFocus={true}
@@ -84,7 +82,7 @@ export default class ReservationDetails extends Component {
             onSubmitEditing={() => this.phoneInput.focus()}
           />
 
-          <Text>{"Email:"}</Text>
+          <Text style={styles.text}>{"Email:"}</Text>
           <TextInput
             style={styles.input}
             editable={this.props.item.reserved == 0}
@@ -97,7 +95,7 @@ export default class ReservationDetails extends Component {
             returnKeyType="next"
             onSubmitEditing={() => this.daysInput.focus()}
           />
-          <Text>{"Phone Number:"}</Text>
+          <Text style={styles.text}>{"Phone Number:"}</Text>
           <TextInput
             style={styles.input}
             editable={this.props.item.reserved == 0}
@@ -108,16 +106,6 @@ export default class ReservationDetails extends Component {
             ref={input => (this.phoneInput = input)}
             returnKeyType="next"
             onSubmitEditing={() => this.daysInput.focus()}
-          />
-          <Text>{"Days to borrow:"}</Text>
-          <TextInput
-            style={styles.input}
-            editable={this.props.item.reserved == 0}
-            keyboardType={"number-pad"}
-            onChangeText={txt => {
-              this.setState({ borrowDays: txt });
-            }}
-            ref={input => (this.daysInput = input)}
           />
         </View>
       );
@@ -189,5 +177,8 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 15,
     width: "80%"
+  },
+  text: {
+    fontSize: 20
   }
 });

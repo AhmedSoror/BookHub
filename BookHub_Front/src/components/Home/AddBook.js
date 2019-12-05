@@ -50,7 +50,8 @@ export default class AddBook extends Component {
       >
         <View style={styles.modalContainer}>
           <View>
-            <Text>{"Book Name :"}</Text>
+            <Text style={styles.titleText}>{"Add new Book"}</Text>
+            <Text style={{fontSize: 20}}>{"Book Name :"}</Text>
             <TextInput
               style={styles.input}
               autoFocus={true}
@@ -104,5 +105,10 @@ const styles = StyleSheet.create({
   button: {
     margin: 15,
     width: "80%"
-  }
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: "center",
+  },
 });
