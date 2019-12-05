@@ -23,10 +23,10 @@ export default class ReservationDetails extends Component {
   async reserveBook(item) {
     const payload = {
       bookId: item.id,
-      borrowerName: this.props.borrowerName,
-      borrowerEmail: this.props.borrowerEmail,
-      phoneNumber: this.props.phoneNumber,
-      borrowDays: this.props.borrowDays
+      borrowerName: item.borrowerName,
+      borrowerEmail: item.borrowerEmail,
+      phoneNumber: item.phoneNumber,
+      borrowDays: item.borrowDays
     };
     console.log(`${payload.borrowerName}///////${payload.borrowerName}`);
     await axios

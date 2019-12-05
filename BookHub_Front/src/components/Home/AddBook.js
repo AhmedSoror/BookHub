@@ -17,12 +17,10 @@ export default class AddBook extends Component {
     };
   }
 
-  async addBook(item) {
+  async addBook() {
     const payload = {
-      bookId: item.id,
-      borrowerName: this.props.borrowerName,
-      phoneNumber: this.props.phoneNumber,
-      borrowDays: this.props.borrowDays
+      bookName: this.state.bookName
+      //ownerId:this.props.userId,
     };
     console.log(`${payload.borrowerName}///////${payload.borrowerName}`);
     await axios
@@ -44,52 +42,40 @@ export default class AddBook extends Component {
   }
 
   render() {
-    let modalContent = null;
-    if (this.props.item) {
-      modalContent = (
-        <View>
-          <Text>{"Book Name:"}</Text>
-          <TextInput
-            style={styles.input}
-            autoFocus={true}
-            editable={this.props.item.reserved == 0}
-            onChangeText={txt => {
-              this.setState({ bookName: txt });
-            }}
-            //returnKeyType="next"
-            //onSubmitEditing={() => this.phoneInput.focus()}
-            // ref={input => (this.phoneInput = input)}
-          />
-        </View>
-      );
-    }
     return (
       <Modal
-        onRequestClose={this.props.onAddBookModalClosed}
-        visible={this.props.isAddBookVisible}
+        onRequestClose={this.props.onModalClosed}
+        visible={this.props.visible}
         animationType="slide"
       >
         <View style={styles.modalContainer}>
-          {modalContent}
+          <View>
+            <Text>{"Book Name :"}</Text>
+            <TextInput
+              style={styles.input}
+              autoFocus={true}
+              onChangeText={txt => {
+                this.setState({ bookName: txt });
+              }}
+              //returnKeyType="next"
+              //onSubmitEditing={() => this.phoneInput.focus()}
+              // ref={input => (this.phoneInput = input)}
+            />
+          </View>
           <View style={{ marginTop: 15 }}>
             <Button
               style={styles.Button}
               title={"Confirm"}
               color={"green"}
-              visible={this.props.item}
               onPress={() => {
-                if (this.props.item.reserved == 0) {
-                  //this.addBook.bind(this);        // axios reserve the book
-                } else {
-                  //this.unReserveBook(this);      // axios cancel book reservation
-                }
+                //this.addBook.bind(this);        // axios reserve the book
               }}
             />
 
             <Button
               style={styles.Button}
               title="Cancel"
-              onPress={this.props.onAddBookModalClosed}
+              onPress={this.props.onModalClosed}
             />
           </View>
         </View>
@@ -110,13 +96,13 @@ const styles = StyleSheet.create({
   input: {
     // textAlign: "center",
     // width: "100%",
-    // marginTop: "5%",
+    paddingLeft: 5,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5
   },
   button: {
-    marginTop: 15,
+    margin: 15,
     width: "80%"
   }
 });

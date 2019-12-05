@@ -7,6 +7,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import CircleButton from "react-native-circle-button";
 
 import BookCard from "./BookCard";
+import AddBook from "./AddBook";
 
 class UserBook extends Component {
   static navigationOptions = {
@@ -15,36 +16,41 @@ class UserBook extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDate: null,
-      isDateTimePickerVisible: false
+      isCollapsed: true,
+      reservationVisible: false
     };
   }
-  showDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: true });
+  hideDetails = () => {
+    this.setState({
+      reservationVisible: false
+    });
   };
+  showDetails(item) {
+    this.setState({
+      reservationVisible: true,
+      selectedItem: item
+    });
+  }
 
-  hideDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: false });
-  };
-
-  handleDatePicked = date => {
-    console.log("A date has been picked: ", date);
-    console.log(`token: ${this.props.token}`);
-    this.hideDateTimePicker();
-  };
   render() {
     return (
       <View style={styles.container}>
         <BookCard title="Oliver Twist" />
-        <View style={{ flex: 1, position: "absolute", bottom: "2%", right: "2%" }}>
-          <CircleButton size={45} 
+        <View
+          style={{ flex: 1, position: "absolute", bottom: "2%", right: "2%" }}
+        >
+          <CircleButton
+            size={45}
             onPressButtonRight={() => {
-              this.setState({
-                
-              });
+              this.showDetails(item);
             }}
           />
         </View>
+        <AddBook
+          visible={this.state.reservationVisible}
+          onModalClosed={this.hideDetails}
+           
+        />
       </View>
     );
   }
