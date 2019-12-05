@@ -1,11 +1,34 @@
 import React, { Component } from "react";
-import { connect  } from "react-redux";
-import { StyleSheet, Text, View } from "react-native";
+import { connect } from "react-redux";
+import { StyleSheet, Text, View, List, ListItem } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import DateTimePicker from "react-native-modal-datetime-picker";
+
 import AllBooksCard from "./AllBooksCard";
 
+const createBooks = () => {
+  items = [];
+
+  book = {
+    key: 0,
+    name: `Oliver Twist`,
+    owner: `Ali Ashraf`,
+    reserved: 0,
+    ownerEmail: "ali@gmail.com"
+  };
+  items.push(book);
+
+  book1 = {
+    key: 1,
+    name: `A tale of two cities`,
+    owner: `Mostafa Ibrahim`,
+    reserved: 1,
+    ownerEmail: "mostafa@gmail.com"
+  };
+  items.push(book1);
+
+  return items;
+};
 class HomeScreen extends Component {
   static navigationOptions = {
     title: "All books"
@@ -13,30 +36,16 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDate: null,
-      isDateTimePickerVisible: false
+      itemList: createBooks()
     };
   }
-  showDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: true });
-  };
 
-  hideDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: false });
-  };
-
-  handleDatePicked = date => {
-    console.log("A date has been picked: ", date);
-    console.log(`token: ${this.props.token}`)
-    this.hideDateTimePicker();
-  };
   render() {
-    return (
-      <View style={styles.container}>
-        <AllBooksCard title="Oliver Twist" />
-        
-      </View>
-    );
+    const bookCards = this.state.itemList.map(item => {
+      return <AllBooksCard book={item} key={item.key} />;
+    });
+
+    return <View style={styles.container}>{bookCards}</View>;
   }
 }
 
@@ -52,12 +61,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    token: state.login.authToken,
+    token: state.login.authToken
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {    
-  };
+  return {};
 };
-export default connect(mapStateToProps,mapDispatchToProps) (HomeScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

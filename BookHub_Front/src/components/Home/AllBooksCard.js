@@ -18,8 +18,7 @@ const createBook = () => {
     name: `Oliver Twist Book`,
     owner: `Ali Mohammed`,
     reserved: 0,
-    ownerEmail: "ali@gmail.com",
-    color: this.reserved == 1 ? "#757575" : "#75e900"
+    ownerEmail: "ali@gmail.com"
   };
   return item;
 };
@@ -29,8 +28,8 @@ export default class SimpleDetailedCard extends Component {
     super(props);
     this.state = {
       isCollapsed: true,
-      reservationVisible: false,
-      book: createBook()
+      reservationVisible: false
+      // book: createBook()
     };
   }
 
@@ -46,7 +45,7 @@ export default class SimpleDetailedCard extends Component {
       <View style={styles.container}>
         <View style={styles.buttonView}>
           <Button
-            title={this.props.title}
+            title={this.props.book.name}
             onPress={() => {
               this.setState({
                 isCollapsed: !this.state.isCollapsed
@@ -58,7 +57,13 @@ export default class SimpleDetailedCard extends Component {
         <Collapsible collapsed={this.state.isCollapsed}>
           <View style={styles.gridView}>
             <TouchableOpacity
-              style={[styles.itemContainer, { backgroundColor: item.color }]}
+              style={[
+                styles.itemContainer,
+                {
+                  backgroundColor:
+                    this.props.book.reserved == 1 ? "#757575" : "#75e900"
+                }
+              ]}
               onPress={() => {
                 // this.showDetails(item);
               }}
@@ -66,18 +71,26 @@ export default class SimpleDetailedCard extends Component {
               <Text
                 style={[
                   styles.itemName,
-                  { color: this.state.book.reserved == 1 ? "white" : "black" }
+                  { color: this.props.book.reserved == 1 ? "white" : "black" }
                 ]}
               >
-                {`Owner: ${this.state.book.owner}`}
+                {`Owner: ${this.props.book.owner}`}
               </Text>
               <Text
                 style={[
                   styles.itemName,
-                  { color: this.state.book.reserved == 1 ? "white" : "black" }
+                  { color: this.props.book.reserved == 1 ? "white" : "black" }
                 ]}
               >
-                {`Owner Email: ${this.state.book.ownerEmail}`}
+                {`Owner Email: ${this.props.book.ownerEmail}`}
+              </Text>
+              <Text
+                style={[
+                  styles.itemName,
+                  { color: this.props.book.reserved == 1 ? "white" : "black" }
+                ]}
+              >
+                {this.props.book.reserved == 1 ? "Reserved" : "Available"}
               </Text>
             </TouchableOpacity>
           </View>
