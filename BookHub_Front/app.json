@@ -23,8 +23,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.GUC.BookHub"
+    },
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "BookHub is an application where users can borrow books from each other in a smooth way"
   }
 }
