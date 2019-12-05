@@ -14,6 +14,7 @@ export default class ReservationDetails extends Component {
     super(props);
     this.state = {
       borrowerName: "",
+      borrowerEmail: "",
       phoneNumber: "",
       borrowDays: ""
     };
@@ -23,6 +24,7 @@ export default class ReservationDetails extends Component {
     const payload = {
       bookId: item.id,
       borrowerName: this.props.borrowerName,
+      borrowerEmail: this.props.borrowerEmail,
       phoneNumber: this.props.phoneNumber,
       borrowDays: this.props.borrowDays
     };
@@ -82,6 +84,19 @@ export default class ReservationDetails extends Component {
             onSubmitEditing={() => this.phoneInput.focus()}
           />
 
+          <Text>{"Email:"}</Text>
+          <TextInput
+            style={styles.input}
+            editable={this.props.item.reserved == 0}
+            autoCompleteType={"email"}
+            keyboardType={"email-address"}
+            onChangeText={txt => {
+              this.setState({ borrowerEmail: txt });
+            }}
+            ref={input => (this.phoneInput = input)}
+            returnKeyType="next"
+            onSubmitEditing={() => this.daysInput.focus()}
+          />
           <Text>{"Phone Number:"}</Text>
           <TextInput
             style={styles.input}
@@ -94,7 +109,6 @@ export default class ReservationDetails extends Component {
             returnKeyType="next"
             onSubmitEditing={() => this.daysInput.focus()}
           />
-
           <Text>{"Days to borrow:"}</Text>
           <TextInput
             style={styles.input}
