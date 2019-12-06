@@ -75,7 +75,13 @@ export default class ReservationDetails extends Component {
             style={styles.input}
             autoFocus={true}
             editable={this.props.book.reserved == 0}
-            value={this.props.book.reserved == 1?this.props.borrowerName:""}
+            value={
+              this.props.book.reserved == 1
+                ? this.props.borrower.name
+                  ? this.props.borrower.name
+                  : "loading ...."
+                : ""
+            }
             onChangeText={txt => {
               this.setState({ borrowerName: txt });
             }}
@@ -87,7 +93,9 @@ export default class ReservationDetails extends Component {
           <TextInput
             style={styles.input}
             editable={this.props.book.reserved == 0}
-            value={this.props.book.reserved == 1?this.props.borrowerEmail:""}
+            value={
+              this.props.book.reserved == 1 ? this.props.borrower.email : ""
+            }
             autoCompleteType={"email"}
             keyboardType={"email-address"}
             onChangeText={txt => {
@@ -101,7 +109,11 @@ export default class ReservationDetails extends Component {
           <TextInput
             style={styles.input}
             editable={this.props.book.reserved == 0}
-            value={this.props.book.reserved == 1?this.props.borrowerPhone:""}
+            value={
+              this.props.book.reserved == 1
+                ? this.props.borrower.phone_number
+                : ""
+            }
             keyboardType={"phone-pad"}
             onChangeText={txt => {
               this.setState({ phoneNumber: txt });
@@ -172,7 +184,7 @@ const styles = StyleSheet.create({
   input: {
     // textAlign: "center",
     // width: "100%",
-    // marginTop: "5%",
+    paddingLeft: 5,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5

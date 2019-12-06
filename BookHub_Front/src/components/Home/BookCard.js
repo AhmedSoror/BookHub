@@ -113,11 +113,15 @@ export default class BookCard extends Component {
             )}
           </View>
         </Collapsible>
-        <ReservationDetails
+        {this.state.borrower ? (<ReservationDetails
           visible={this.state.reservationVisible}
           onModalClosed={this.hideDetails}
           book={this.props.book}
-        />
+          borrower= {this.state.borrower}
+        />)
+        :(<View></View>)
+        
+        }
       </View>
     );
   }
