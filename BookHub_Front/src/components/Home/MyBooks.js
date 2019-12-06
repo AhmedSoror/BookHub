@@ -5,6 +5,8 @@ import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import CircleButton from "react-native-circle-button";
+import axios from "axios";
+axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 import BookCard from "./BookCard";
 import AddBook from "./AddBook";
@@ -13,20 +15,36 @@ const createBooks = () => {
   items = [];
 
   book = {
-    key: 0,
-    title: `Oliver Twist`,
-    owner: `Ali Ashraf`,
-    reserved: 0,
-    ownerEmail: "ali@gmail.com"
+    _id: {
+      $oid: "5dea8a74f668220001f3df99"
+    },
+    author: "charles dickenes",
+    borrower_id: {
+      $oid: "5dea8a64f668220001f3df98"
+    },
+    days_to_borrow: null,
+    owner_id: {
+      $oid: "5dea8a64f668220001f3df98"
+    },
+    reserved: 1,
+    title: "Oliver Twist"
   };
   items.push(book);
 
   book1 = {
-    key: 1,
-    title: `A tale of two cities`,
-    owner: `Ali Ashraf`,
-    reserved: 1,
-    ownerEmail: "ali@gmail.com"
+    _id: {
+      $oid: "5dea8a9cf668220001f3df9a"
+    },
+    author: "charles dickenes",
+    borrower_id: {
+      $oid: "5dea8160f668220001f3df95"
+    },
+    days_to_borrow: null,
+    owner_id: {
+      $oid: "5dea8160f668220001f3df95"
+    },
+    reserved: 0,
+    title: "A tale of two cities"
   };
   items.push(book1);
 
@@ -41,9 +59,25 @@ class MyBooks extends Component {
     this.state = {
       isCollapsed: true,
       reservationVisible: false,
-      itemList: createBooks()
+      bookList:createBooks()
+      // bookList: null
     };
   }
+
+  componentDidMount() {
+    axios
+      .get(`/user_books/${this.props.user.id}`)
+      .then(response => {
+        this.setState({
+          bookList: response.data
+        });
+      })
+
+      .catch(error => {
+        console.log(`error: ${error}`);
+      });
+  }
+
   hideDetails = () => {
     this.setState({
       reservationVisible: false
@@ -56,31 +90,38 @@ class MyBooks extends Component {
   }
 
   render() {
-    const userBookCards = this.state.itemList.map(item => {
-      return <BookCard book={item} key={item.key} />;
-    });
+    userBookCards = null;
+    if (this.state.bookList) {
+      userBookCards = this.state.bookList.map(book => {
+        return <BookCard book={book} key={book._id.$oid} />;
+      });
+    }
 
-    return (
-      <View style={styles.container}>
-        {userBookCards}
+    if (userBookCards) {
+      return (
+        <View style={styles.container}>
+          {userBookCards}
 
-        <View
-          style={{ flex: 1, position: "absolute", bottom: "2%", right: "2%" }}
-        >
-          <CircleButton
-            size={45}
-            onPressButtonRight={() => {
-              this.showDetails();
-              //console.log(this.props.user);
-            }}
+          <View
+            style={{ flex: 1, position: "absolute", bottom: "2%", right: "2%" }}
+          >
+            <CircleButton
+              size={45}
+              onPressButtonRight={() => {
+                this.showDetails();
+                // console.log(this.props.user);
+              }}
+            />
+          </View>
+          <AddBook
+            visible={this.state.reservationVisible}
+            onModalClosed={this.hideDetails}
           />
         </View>
-        <AddBook
-          visible={this.state.reservationVisible}
-          onModalClosed={this.hideDetails}
-        />
-      </View>
-    );
+      );
+    } else {
+      return <Text>{"Loading ...."}</Text>;
+    }
   }
 }
 

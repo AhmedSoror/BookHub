@@ -45,8 +45,8 @@ const AppNavigator = createSwitchNavigator(
     HomeScreen: AppNavigationContainer,
   },
   {
-    // initialRouteName: "Login"
-    initialRouteName: "HomeScreen"
+    initialRouteName: "Login"
+    // initialRouteName: "HomeScreen"
   }
 );
 

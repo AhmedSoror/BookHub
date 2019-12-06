@@ -8,6 +8,8 @@ import {
   Dimensions,
   FlatList
 } from "react-native";
+import axios from "axios";
+axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 import Collapsible from "react-native-collapsible";
 import { Button } from "react-native-elements";
@@ -20,10 +22,22 @@ export default class BookCard extends Component {
     this.state = {
       isCollapsed: true,
       reservationVisible: false,
-      
+      borrower: null
     };
   }
-
+  async componentDidMount() {
+    await axios
+      .get(`/users/${this.props.book.borrower_id.$oid}`)
+      .then(response => {
+        this.setState({
+          borrower: response.data
+        });
+        console.log(this.state.borrower);
+      })
+      .catch(error => {
+        console.log(`error: ${error}`);
+      });
+  }
   hideDetails = () => {
     this.setState({
       reservationVisible: false
@@ -35,8 +49,7 @@ export default class BookCard extends Component {
       selectedItem: item
     });
   }
-  
-  
+
   render() {
     return (
       <View style={styles.container}>
@@ -47,43 +60,63 @@ export default class BookCard extends Component {
               this.setState({
                 isCollapsed: !this.state.isCollapsed
               });
+              console.log(this.props.book);
             }}
           />
         </View>
 
         <Collapsible collapsed={this.state.isCollapsed}>
           <View style={styles.gridView}>
-            <TouchableOpacity
-              style={[styles.itemContainer, { backgroundColor: this.props.book.reserved == 1 ? "#757575" : "#75e900" }]}
-              onPress={() => {
-                this.showDetails(this.props.book);
-              }}
-            >
-              <Text
+            {this.state.borrower ? (
+              <TouchableOpacity
                 style={[
-                  styles.itemName,
-                  { color: this.props.book.reserved == 1 ? "white" : "black" }
+                  styles.itemContainer,
+                  {
+                    backgroundColor:
+                      this.props.book.reserved == 1 ? "#757575" : "#75e900"
+                  }
                 ]}
+                onPress={() => {
+                  this.showDetails(this.props.book);
+                }}
               >
-                {/* create method to get borrow name */}
-                {`Borrower Name: ${this.state.borrowerName}`}     
-              </Text>
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.props.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {`Phone Number: ${this.state.borrowerPhoneNumber}`}
-              </Text>
-               
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.itemName,
+                    { color: this.props.book.reserved == 1 ? "white" : "black" }
+                  ]}
+                >
+                  {/* create method to get borrow name */}
+                  {`Borrower Name: ${this.props.book.reserved == 1 ?this.state.borrower.name:"-"}`}
+                </Text>
+                <Text
+                  style={[
+                    styles.itemName,
+                    {
+                      color: this.props.book.reserved == 1 ? "white" : "black"
+                    }
+                  ]}
+                >
+                  {`Borrower Email: ${this.props.book.reserved == 1 ?this.state.borrower.email:"-"}`}
+                </Text>
+                <Text
+                  style={[
+                    styles.itemName,
+                    { color: this.props.book.reserved == 1 ? "white" : "black" }
+                  ]}
+                >
+                  {`Phone Number: ${this.props.book.reserved == 1 ?this.state.borrower.phone_number:"-"}`}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <Text>{"Loading ...."}</Text>
+            )}
           </View>
         </Collapsible>
         <ReservationDetails
           visible={this.state.reservationVisible}
           onModalClosed={this.hideDetails}
-          item={this.props.book}
+          book={this.props.book}
         />
       </View>
     );

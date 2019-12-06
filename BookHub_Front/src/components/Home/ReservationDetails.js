@@ -19,12 +19,12 @@ export default class ReservationDetails extends Component {
     };
   }
 
-  async reserveBook(item) {
+  async reserveBook(book) {
     const payload = {
-      bookId: item.id,
-      borrowerName: item.borrowerName,
-      borrowerEmail: item.borrowerEmail,
-      phoneNumber: item.phoneNumber
+      bookId: book.id,
+      borrowerName: book.borrowerName,
+      borrowerEmail: book.borrowerEmail,
+      phoneNumber: book.phoneNumber
     };
     console.log(`${payload.borrowerName}///////${payload.borrowerName}`);
     await axios
@@ -44,9 +44,9 @@ export default class ReservationDetails extends Component {
         // }
       });
   }
-  async unReserveBook(item) {
+  async unReserveBook(book) {
     const payload = {
-      bookId: item.id
+      bookId: book.id
     };
     console.log(`${bookId}`);
     await axios
@@ -67,15 +67,15 @@ export default class ReservationDetails extends Component {
   }
   render() {
     let modalContent = null;
-    if (this.props.item) {
+    if (this.props.book) {
       modalContent = (
         <View>
           <Text style={styles.text}>{"Borrower name:"}</Text>
           <TextInput
             style={styles.input}
             autoFocus={true}
-            editable={this.props.item.reserved == 0}
-            value={this.props.item.reserved == 1?this.props.borrowerName:""}
+            editable={this.props.book.reserved == 0}
+            value={this.props.book.reserved == 1?this.props.borrowerName:""}
             onChangeText={txt => {
               this.setState({ borrowerName: txt });
             }}
@@ -86,8 +86,8 @@ export default class ReservationDetails extends Component {
           <Text style={styles.text}>{"Email:"}</Text>
           <TextInput
             style={styles.input}
-            editable={this.props.item.reserved == 0}
-            value={this.props.item.reserved == 1?this.props.borrowerEmail:""}
+            editable={this.props.book.reserved == 0}
+            value={this.props.book.reserved == 1?this.props.borrowerEmail:""}
             autoCompleteType={"email"}
             keyboardType={"email-address"}
             onChangeText={txt => {
@@ -100,8 +100,8 @@ export default class ReservationDetails extends Component {
           <Text style={styles.text}>{"Phone Number:"}</Text>
           <TextInput
             style={styles.input}
-            editable={this.props.item.reserved == 0}
-            value={this.props.item.reserved == 1?this.props.borrowerPhone:""}
+            editable={this.props.book.reserved == 0}
+            value={this.props.book.reserved == 1?this.props.borrowerPhone:""}
             keyboardType={"phone-pad"}
             onChangeText={txt => {
               this.setState({ phoneNumber: txt });
@@ -125,22 +125,22 @@ export default class ReservationDetails extends Component {
             <Button
               style={styles.Button}
               title={
-                this.props.item
-                  ? this.props.item.reserved == 1
+                this.props.book
+                  ? this.props.book.reserved == 1
                     ? "Delete"
                     : "Confirm"
                   : ""
               }
               color={
-                this.props.item
-                  ? this.props.item.reserved == 1
+                this.props.book
+                  ? this.props.book.reserved == 1
                     ? "red"
                     : "green"
                   : "blue"
               }
-              visible={this.props.item}
+              visible={this.props.book}
               onPress={() => {
-                if (this.props.item.reserved == 0) {
+                if (this.props.book.reserved == 0) {
                   //this.reserveBook.bind(this);        // axios reserve the book
                 } else {
                   //this.unReserveBook(this);      // axios cancel book reservation

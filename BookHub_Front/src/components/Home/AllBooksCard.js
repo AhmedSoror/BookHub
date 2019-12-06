@@ -117,7 +117,7 @@ export default class AllBooksCard extends Component {
                   </Text>
                 </TouchableOpacity>
               </View>
-            ) : (
+            ) : (               // else
               <Text>{"Loading ...."}</Text>
             )}
           </View>
