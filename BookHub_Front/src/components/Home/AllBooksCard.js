@@ -8,18 +8,35 @@ import {
   Dimensions,
   FlatList
 } from "react-native";
+import axios from "axios";
+axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 import Collapsible from "react-native-collapsible";
 import { Button } from "react-native-elements";
 
-export default class SimpleDetailedCard extends Component {
+export default class AllBooksCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isCollapsed: true,
-      reservationVisible: false
+      reservationVisible: false,
+      owner: null
       // book: createBook()
     };
+  }
+  async componentDidMount() {
+    // console.log(this.props.book.owner_id.$oid);
+    await axios
+      .get(`/users/${this.props.book.owner_id.$oid}`)
+      .then(response => {
+        // console.log(response.data);
+        this.setState({
+          owner: response.data
+        });
+      })
+      .catch(error => {
+        console.log(`error: ${error}`);
+      });
   }
 
   showDetails(item) {
@@ -45,43 +62,68 @@ export default class SimpleDetailedCard extends Component {
 
         <Collapsible collapsed={this.state.isCollapsed}>
           <View style={styles.gridView}>
-            <TouchableOpacity
-              style={[
-                styles.itemContainer,
-                {
-                  backgroundColor:
-                    this.props.book.reserved == 1 ? "#757575" : "#75e900"
-                }
-              ]}
-              onPress={() => {
-                // this.showDetails(item);
-              }}
-            >
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.props.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {`Owner: ${this.props.book.owner}`}
-              </Text>
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.props.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {`Owner Email: ${this.props.book.ownerEmail}`}
-              </Text>
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.props.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {this.props.book.reserved == 1 ? "Reserved" : "Available"}
-              </Text>
-            </TouchableOpacity>
+            {this.state.owner ? (
+              <View>
+                <TouchableOpacity
+                  style={[
+                    styles.itemContainer,
+                    {
+                      backgroundColor:
+                        this.props.book.reserved == 1 ? "#757575" : "#75e900"
+                    }
+                  ]}
+                  onPress={() => {
+                    // this.showDetails(item);
+                    console.log(this.state.owner.email);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.itemName,
+                      {
+                        color: this.props.book.reserved == 1 ? "white" : "black"
+                      }
+                    ]}
+                  >
+                    {`Owner Name: ${this.state.owner.name}`}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.itemName,
+                      {
+                        color: this.props.book.reserved == 1 ? "white" : "black"
+                      }
+                    ]}
+                  >
+                    {`Owner Email: `}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.itemName,
+                      {
+                        color:
+                          this.props.book.reserved == 1 ? "white" : "black",
+                        textAlign: "center"
+                      }
+                    ]}
+                  >
+                    {`${this.state.owner.email}`}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.itemName,
+                      {
+                        color: this.props.book.reserved == 1 ? "white" : "black"
+                      }
+                    ]}
+                  >
+                    {this.props.book.reserved == 1 ? "Reserved" : "Available"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <Text>{"Loading ...."}</Text>
+            )}
           </View>
         </Collapsible>
       </View>
@@ -111,7 +153,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    //alignItems: "center",
     height: "100%",
     padding: 1,
     margin: 1,
@@ -142,7 +184,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "left"
   },
 
   itemInvisible: {
