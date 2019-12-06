@@ -45,10 +45,6 @@ class Login extends Component {
           })
           .catch(error => {
             console.log(`error: ${error}`);
-            // console.log(error.response.status);
-            // if (error.response.status === 404) {
-            //   Alert.alert("Wrong username or password");
-            // }
           });
 
         this.props.navigation.navigate("HomeScreen");

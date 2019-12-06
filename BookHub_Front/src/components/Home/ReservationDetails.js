@@ -22,7 +22,6 @@ export default class ReservationDetails extends Component {
   }
 
   async reserveBook() {
-    console.log("3213535");
     await axios
       .put(`/books/${this.props.book._id.$oid}`, {
         reserved: 1,
@@ -30,10 +29,8 @@ export default class ReservationDetails extends Component {
         phone_number: this.state.phoneNumber
       })
       .then(response => {
-        console.log(response);
         if (response.status === 200) {
           Alert.alert("Book is updated successfully");
-          console.log("updated successfully");
         }
       })
       .catch(error => {
@@ -42,7 +39,6 @@ export default class ReservationDetails extends Component {
   }
 
   async unReserveBook() {
-    console.log("line 45");
     await axios
       .put(`/books/${this.props.book._id.$oid}`, {
         reserved: 0,
@@ -51,7 +47,6 @@ export default class ReservationDetails extends Component {
       .then(response => {
         if (response.status === 200) {
           Alert.alert("Book is updated successfully");
-          console.log("unreserved successfully");
         }
       })
       .catch(error => {
@@ -61,13 +56,9 @@ export default class ReservationDetails extends Component {
 
   actionButtonFunction = () => {
     if (this.props.book.reserved == 0) {
-      console.log("line 143");
-      this.reserveBook(); // axios reserve the book
-      // this.reserveBook(this.props.book);
+      this.reserveBook();
     } else {
-      console.log("line 147");
-      this.unReserveBook(); // axios cancel book reservation
-      // this.unReserveBook(this.props.book);
+      this.unReserveBook();
     }
     console.log("line 151");
     this.props.onModalClosed();

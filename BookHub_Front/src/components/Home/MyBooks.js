@@ -32,19 +32,19 @@ const createBooks = () => {
   items.push(book);
 
   book1 = {
-    "_id": {
-      "$oid": "5dea8a9cf668220001f3df9a"
-  },
-  "author": "charles dickenes",
-  "borrower_id": {
-      "$oid": "5dea8160f668220001f3df95"
-  },
-  "days_to_borrow": null,
-  "owner_id": {
-      "$oid": "5dea8160f668220001f3df95"
-  },
-  "reserved": 1,
-  "title": "A tale of two cities"
+    _id: {
+      $oid: "5dea8a9cf668220001f3df9a"
+    },
+    author: "charles dickenes",
+    borrower_id: {
+      $oid: "5dea8160f668220001f3df95"
+    },
+    days_to_borrow: null,
+    owner_id: {
+      $oid: "5dea8160f668220001f3df95"
+    },
+    reserved: 1,
+    title: "A tale of two cities"
   };
   items.push(book1);
 
@@ -109,7 +109,6 @@ class MyBooks extends Component {
               size={45}
               onPressButtonRight={() => {
                 this.showDetails();
-                // console.log(this.props.user);
               }}
             />
           </View>

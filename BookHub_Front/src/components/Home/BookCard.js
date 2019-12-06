@@ -32,7 +32,7 @@ export default class BookCard extends Component {
         this.setState({
           borrower: response.data
         });
-        console.log(this.state.borrower);
+      
       })
       .catch(error => {
         console.log(`error: ${error}`);
@@ -60,7 +60,7 @@ export default class BookCard extends Component {
               this.setState({
                 isCollapsed: !this.state.isCollapsed
               });
-              console.log(this.props.book);
+             
             }}
           />
         </View>
