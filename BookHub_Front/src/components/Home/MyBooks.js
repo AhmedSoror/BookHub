@@ -59,12 +59,13 @@ class MyBooks extends Component {
     this.state = {
       isCollapsed: true,
       reservationVisible: false,
-      bookList: createBooks()
-      // bookList: null
+      // bookList: createBooks()
+      bookList: null
     };
   }
 
   componentDidMount() {
+    
     axios
       .get(`/user_books/${this.props.user.id}`)
       .then(response => {
@@ -74,7 +75,7 @@ class MyBooks extends Component {
       })
 
       .catch(error => {
-        console.log(`error: ${error}`);
+        console.log(`my books error: ${error}`);
       });
   }
 
@@ -109,6 +110,7 @@ class MyBooks extends Component {
               size={45}
               onPressButtonRight={() => {
                 this.showDetails();
+                console.log("add MYBook L113 ",this.props.user);
               }}
             />
           </View>

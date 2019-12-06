@@ -35,7 +35,7 @@ export default class BookCard extends Component {
       
       })
       .catch(error => {
-        console.log(`error: ${error}`);
+        console.log(`book card error: ${error}`);
       });
   }
   hideDetails = () => {

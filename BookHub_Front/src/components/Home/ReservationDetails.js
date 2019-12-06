@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Modal,
   View,
@@ -11,7 +12,7 @@ import {
 import axios from "axios";
 axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
-export default class ReservationDetails extends Component {
+class ReservationDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +35,7 @@ export default class ReservationDetails extends Component {
         }
       })
       .catch(error => {
-        console.log(`error: ${error}`);
+        console.log(`reserve error: ${error}`);
       });
   }
 
@@ -46,11 +47,11 @@ export default class ReservationDetails extends Component {
       })
       .then(response => {
         if (response.status === 200) {
-          Alert.alert("Book is updated successfully");
+          Alert.alert("Book is now available");
         }
       })
       .catch(error => {
-        console.log(`error: ${error}`);
+        console.log(`unreserve error: ${error}`);
       });
   }
 
@@ -60,7 +61,7 @@ export default class ReservationDetails extends Component {
     } else {
       this.unReserveBook();
     }
-    console.log("line 151");
+
     this.props.onModalClosed();
   };
   render() {
@@ -185,3 +186,14 @@ const styles = StyleSheet.create({
     fontSize: 20
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    user: state.login.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ReservationDetails);

@@ -12,6 +12,14 @@ class HomeScreen extends Component {
   static navigationOptions = {
     title: "All books"
   };
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      allBookList: null
+    };
+  };
+
   componentDidMount() {
     axios
       .get("/books")
@@ -22,16 +30,11 @@ class HomeScreen extends Component {
       })
 
       .catch(error => {
-        console.log(`error: ${error}`);
+        console.log(`all books error: ${error}`);
       });
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      allBookList: null
-    };
-  }
+  
 
   render() {
     if (this.state.allBookList) {

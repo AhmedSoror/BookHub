@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Modal,
   View,
@@ -8,39 +9,39 @@ import {
   StyleSheet,
   TextInput
 } from "react-native";
+import axios from "axios";
+axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
-export default class AddBook extends Component {
+class AddBook extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookName: ""
+      bookName: "",
     };
   }
 
   async addBook() {
-    const payload = {
-      bookName: this.state.bookName
-      //ownerId:this.props.userId,
-    };
-    console.log(`${payload.borrowerName}///////${payload.borrowerName}`);
+    console.log(this.props.user);
     await axios
-      .post("/books/reserve", { payload }) //////////////*************************************** */
-      // .post("http://localhost:3000/books/reserve", { payload })
+      .post(`/books/`, {
+        "title":this.state.bookName,
+        "author": "",
+        "owner": this.props.user.id,
+        "reserved": 0,
+        "borrower": this.props.user.id        
+      })
       .then(response => {
-        console.log("received data from axios:");
-        console.log(response);
         if (response.status === 200) {
+          Alert.alert("Book added successfully");
+          this.props.onModalClosed
         }
       })
       .catch(error => {
-        console.log(`error: ${error}`);
-        // console.log(error.response.status);
-        // if (error.response.status === 404) {
-        //   Alert.alert("Wrong username or password");
-        // }
+        console.log(`add book error: ${error}`);
       });
   }
-
+  
+  
   render() {
     return (
       <Modal
@@ -56,11 +57,9 @@ export default class AddBook extends Component {
               style={styles.input}
               autoFocus={true}
               onChangeText={txt => {
+                console.log("add book L60 ",this.props.user);
                 this.setState({ bookName: txt });
               }}
-              //returnKeyType="next"
-              //onSubmitEditing={() => this.phoneInput.focus()}
-              // ref={input => (this.phoneInput = input)}
             />
           </View>
           <View style={{ marginTop: 15 }}>
@@ -68,9 +67,7 @@ export default class AddBook extends Component {
               style={styles.Button}
               title={"Confirm"}
               color={"green"}
-              onPress={() => {
-                //this.addBook.bind(this);        // axios reserve the book
-              }}
+              onPress={this.addBook}
             />
 
             <Button
@@ -112,3 +109,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+const mapStateToProps = state => {
+  return {
+    user: state.login.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AddBook);

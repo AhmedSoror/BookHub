@@ -32,7 +32,7 @@ export default class AllBooksCard extends Component {
         });
       })
       .catch(error => {
-        console.log(`error: ${error}`);
+        console.log(`all books card error: ${error}`);
       });
   }
 
