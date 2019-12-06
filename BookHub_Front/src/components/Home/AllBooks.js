@@ -8,29 +8,6 @@ axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 import AllBooksCard from "./AllBooksCard";
 
-const createBooks = () => {
-  items = [];
-
-  book = {
-    key: 0,
-    title: `Oliver Twist`,
-    owner: `Ali Ashraf`,
-    reserved: 0,
-    ownerEmail: "ali@gmail.com"
-  };
-  items.push(book);
-
-  book1 = {
-    key: 1,
-    title: `A tale of two cities`,
-    owner: `Mostafa Ibrahim`,
-    reserved: 1,
-    ownerEmail: "mostafa@gmail.com"
-  };
-  items.push(book1);
-
-  return items;
-};
 class HomeScreen extends Component {
   static navigationOptions = {
     title: "All books"
@@ -52,7 +29,6 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      //itemList: createBooks()
       itemList: null
     };
   }
