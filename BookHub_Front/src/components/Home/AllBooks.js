@@ -17,7 +17,7 @@ class HomeScreen extends Component {
       .get("/books")
       .then(response => {
         this.setState({
-          itemList: response.data
+          allBookList: response.data
         });
       })
 
@@ -29,13 +29,13 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemList: null
+      allBookList: null
     };
   }
 
   render() {
-    if (this.state.itemList) {
-      const bookCards = this.state.itemList.map(item => {
+    if (this.state.allBookList) {
+      const bookCards = this.state.allBookList.map(item => {
         return <AllBooksCard book={item} key={item._id.$oid} />;
       });
       return <View style={styles.container}>{bookCards}</View>;
