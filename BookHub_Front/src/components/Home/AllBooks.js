@@ -39,7 +39,6 @@ class HomeScreen extends Component {
     axios
       .get("/books")
       .then(response => {
-        console.log(response.data[0]);
         this.setState({
           itemList: response.data
         });
