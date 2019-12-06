@@ -1,5 +1,1 @@
-export const ENTER_USERNAME = "ENTER_USERNAME";
-export const ENTER_PASSWORD = "ENTER_PASSWORD";
-export const REMEMBER_ME = "REMEMBER_ME";
-export const USER_FORGOT_PASSWORD = "USER_FORGOT_PASSWORD";
-export const AUTH_USER = "AUTH_USER";
+export const USER_LOGIN = "USER_LOGIN";

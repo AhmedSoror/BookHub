@@ -10,7 +10,9 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import { authUser } from "../../store/actions/index";
+import { userLogin } from "../../store/actions/index";
+import axios from "axios";
+axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 class Login extends Component {
   static navigationOptions = {
@@ -24,9 +26,34 @@ class Login extends Component {
           "869039466780-d7a4t533o0iqq8s38lkcanekp2djj8f6.apps.googleusercontent.com"
       });
       if (type === "success") {
-        console.log("token: "+accessToken);
-        console.log(user);
-        this.props.authUser(accessToken,user);
+        console.log("token: " + accessToken);
+        // console.log(user);
+        this.props.userLogin(user);
+        const payload = {
+          email: user.email,
+          name: user.name
+        };
+        console.log(payload);
+        // login in our database
+        await axios
+          .post("/users", { payload })
+          .then(response => {
+            console.log("received data from axios:");
+            console.log(response);
+            if (response.status === 200) {
+              this.props.userLogin(response.data.user);           // ask backend to return object "user"
+              this.props.navigation.navigate("HomeScreen");
+             
+            }
+          })
+          .catch(error => {
+            console.log(`error: ${error}`);
+            // console.log(error.response.status);
+            // if (error.response.status === 404) {
+            //   Alert.alert("Wrong username or password");
+            // }
+          });
+
         this.props.navigation.navigate("HomeScreen");
       }
     } catch (e) {
@@ -136,21 +163,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    userName: state.login.userName,
-    password: state.login.password,
-    isRememberMe: state.login.isRememberMe,
-    forgotPasswordModalVisible: state.login.forgotPasswordModalVisible,
-    token: state.login.authToken
+    user: state.login.user
+
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    enterUserName: name => dispatch(enterUserName(name)),
-    enterPassword: password => dispatch(enterPassword(password)),
-    rememberMe: flag => dispatch(rememberMe(flag)),
-    forgotPassword: isVisible => dispatch(forgotPassword(isVisible)),
-    authUser: token => dispatch(authUser(token))
+    userLogin: user => dispatch(userLogin(user))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

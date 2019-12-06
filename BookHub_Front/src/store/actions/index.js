@@ -1,7 +1,3 @@
 export {
-  enterUserName,
-  enterPassword,
-  rememberMe,
-  forgotPassword,
-  authUser
+  userLogin
 } from "./login";
