@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import {
   Modal,
   View,
-  Image,
+  Alert,
   Text,
   Button,
   StyleSheet,
   TextInput
 } from "react-native";
+import axios from "axios";
+axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 export default class ReservationDetails extends Component {
   constructor(props) {
@@ -19,52 +21,57 @@ export default class ReservationDetails extends Component {
     };
   }
 
-  async reserveBook(book) {
-    const payload = {
-      bookId: book.id,
-      borrowerName: book.borrowerName,
-      borrowerEmail: book.borrowerEmail,
-      phoneNumber: book.phoneNumber
-    };
-    console.log(`${payload.borrowerName}///////${payload.borrowerName}`);
+  async reserveBook() {
+    console.log("3213535");
     await axios
-      .post("/books/reserve", { payload }) //////////////*************************************** */
-      // .post("http://localhost:3000/books/reserve", { payload })
+      .put(`/books/${this.props.book._id.$oid}`, {
+        reserved: 1,
+        email: this.state.borrowerEmail,
+        phone_number: this.state.phoneNumber
+      })
       .then(response => {
-        console.log("received data from axios:");
         console.log(response);
         if (response.status === 200) {
+          Alert.alert("Book is updated successfully");
+          console.log("updated successfully");
         }
       })
       .catch(error => {
         console.log(`error: ${error}`);
-        // console.log(error.response.status);
-        // if (error.response.status === 404) {
-        //   Alert.alert("Wrong username or password");
-        // }
       });
   }
-  async unReserveBook(book) {
-    const payload = {
-      bookId: book.id
-    };
-    console.log(`${bookId}`);
+
+  async unReserveBook() {
+    console.log("line 45");
     await axios
-      .post("/books/unReserve", { payload }) //////////////*************************************** */
+      .put(`/books/${this.props.book._id.$oid}`, {
+        reserved: 0,
+        email: this.props.user.email
+      })
       .then(response => {
-        console.log("received data from axios:");
-        console.log(response);
         if (response.status === 200) {
+          Alert.alert("Book is updated successfully");
+          console.log("unreserved successfully");
         }
       })
       .catch(error => {
         console.log(`error: ${error}`);
-        // console.log(error.response.status);
-        // if (error.response.status === 404) {
-        //   Alert.alert("Wrong username or password");
-        // }
       });
   }
+
+  actionButtonFunction = () => {
+    if (this.props.book.reserved == 0) {
+      console.log("line 143");
+      this.reserveBook(); // axios reserve the book
+      // this.reserveBook(this.props.book);
+    } else {
+      console.log("line 147");
+      this.unReserveBook(); // axios cancel book reservation
+      // this.unReserveBook(this.props.book);
+    }
+    console.log("line 151");
+    this.props.onModalClosed();
+  };
   render() {
     let modalContent = null;
     if (this.props.book) {
@@ -75,25 +82,23 @@ export default class ReservationDetails extends Component {
             style={styles.input}
             autoFocus={true}
             editable={this.props.book.reserved == 0}
-            value={
+            defaultValue={
               this.props.book.reserved == 1
                 ? this.props.borrower.name
                   ? this.props.borrower.name
                   : "loading ...."
                 : ""
             }
-            onChangeText={txt => {
-              this.setState({ borrowerName: txt });
-            }}
+            onChangeText={text => this.setState({ borrowerName: text })}
             returnKeyType="next"
-            onSubmitEditing={() => this.phoneInput.focus()}
+            onSubmitEditing={() => this.emailInput.focus()}
           />
 
           <Text style={styles.text}>{"Email:"}</Text>
           <TextInput
             style={styles.input}
             editable={this.props.book.reserved == 0}
-            value={
+            defaultValue={
               this.props.book.reserved == 1 ? this.props.borrower.email : ""
             }
             autoCompleteType={"email"}
@@ -101,15 +106,15 @@ export default class ReservationDetails extends Component {
             onChangeText={txt => {
               this.setState({ borrowerEmail: txt });
             }}
-            ref={input => (this.phoneInput = input)}
+            ref={input => (this.emailInput = input)}
             returnKeyType="next"
-            onSubmitEditing={() => this.daysInput.focus()}
+            onSubmitEditing={() => this.phoneInput.focus()}
           />
           <Text style={styles.text}>{"Phone Number:"}</Text>
           <TextInput
             style={styles.input}
             editable={this.props.book.reserved == 0}
-            value={
+            defaultValue={
               this.props.book.reserved == 1
                 ? this.props.borrower.phone_number
                 : ""
@@ -119,8 +124,6 @@ export default class ReservationDetails extends Component {
               this.setState({ phoneNumber: txt });
             }}
             ref={input => (this.phoneInput = input)}
-            returnKeyType="next"
-            onSubmitEditing={() => this.daysInput.focus()}
           />
         </View>
       );
@@ -151,13 +154,7 @@ export default class ReservationDetails extends Component {
                   : "blue"
               }
               visible={this.props.book}
-              onPress={() => {
-                if (this.props.book.reserved == 0) {
-                  //this.reserveBook.bind(this);        // axios reserve the book
-                } else {
-                  //this.unReserveBook(this);      // axios cancel book reservation
-                }
-              }}
+              onPress={this.actionButtonFunction}
             />
 
             <Button
