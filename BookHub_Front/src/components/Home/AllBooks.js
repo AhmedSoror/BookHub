@@ -39,16 +39,10 @@ class HomeScreen extends Component {
     axios
       .get("/books")
       .then(response => {
-        // console.log(response.data);
+        console.log(response.data[0]);
         this.setState({
           itemList: response.data
         });
-        var arrayLength = response.data.length;
-        for (var i = 0; i < arrayLength; i++) {
-          // console.log(response.data[i]._id);
-          //Do something
-        }
-        console.log(response.data[0]._id);
       })
 
       .catch(error => {
@@ -67,7 +61,7 @@ class HomeScreen extends Component {
   render() {
     if (this.state.itemList) {
       const bookCards = this.state.itemList.map(item => {
-        return <AllBooksCard book={item} key={item._id} />;
+        return <AllBooksCard book={item} key={item._id.$oid} />;
       });
       return <View style={styles.container}>{bookCards}</View>;
     } else {
