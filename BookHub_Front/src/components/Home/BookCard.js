@@ -13,26 +13,14 @@ import Collapsible from "react-native-collapsible";
 import { Button } from "react-native-elements";
 import ReservationDetails from "./ReservationDetails";
 
-const createBook = () => {
-  item = {
-    key: 0,
-    name: `Oliver Twist Book`,
-    borrowerName: `Ali Mohammed`,
-    borrowerPhoneNumber: "01124365749",
-    returnDate: `18/5/2019`,
-    reserved: 1,
-    color: this.reserved == 1 ? "#757575" : "#75e900"
-  };
-  return item;
-};
-
+// set the state of borrowerName and borrowerPhone
 export default class BookCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isCollapsed: true,
       reservationVisible: false,
-      book: createBook()
+      
     };
   }
 
@@ -47,13 +35,14 @@ export default class BookCard extends Component {
       selectedItem: item
     });
   }
-
+  
+  
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.buttonView}>
           <Button
-            title={this.props.title}
+            title={this.props.book.title}
             onPress={() => {
               this.setState({
                 isCollapsed: !this.state.isCollapsed
@@ -65,42 +54,36 @@ export default class BookCard extends Component {
         <Collapsible collapsed={this.state.isCollapsed}>
           <View style={styles.gridView}>
             <TouchableOpacity
-              style={[styles.itemContainer, { backgroundColor: item.reserved == 1 ? "#757575" : "#75e900" }]}
+              style={[styles.itemContainer, { backgroundColor: this.props.book.reserved == 1 ? "#757575" : "#75e900" }]}
               onPress={() => {
-                this.showDetails(item);
+                this.showDetails(this.props.book);
               }}
             >
               <Text
                 style={[
                   styles.itemName,
-                  { color: this.state.book.reserved == 1 ? "white" : "black" }
+                  { color: this.props.book.reserved == 1 ? "white" : "black" }
                 ]}
               >
-                {`Borrower Name: ${item.borrowerName}`}
+                {/* create method to get borrow name */}
+                {`Borrower Name: ${this.state.borrowerName}`}     
               </Text>
               <Text
                 style={[
                   styles.itemName,
-                  { color: this.state.book.reserved == 1 ? "white" : "black" }
+                  { color: this.props.book.reserved == 1 ? "white" : "black" }
                 ]}
               >
-                {`Phone Number: ${item.borrowerPhoneNumber}`}
+                {`Phone Number: ${this.state.borrowerPhoneNumber}`}
               </Text>
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.state.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {`Return date: ${this.state.book.returnDate}`}
-              </Text>
+               
             </TouchableOpacity>
           </View>
         </Collapsible>
         <ReservationDetails
           visible={this.state.reservationVisible}
           onModalClosed={this.hideDetails}
-          item={this.state.book}
+          item={this.props.book}
         />
       </View>
     );

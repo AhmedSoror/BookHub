@@ -11,7 +11,7 @@ const createBooks = () => {
 
   book = {
     key: 0,
-    name: `Oliver Twist`,
+    title: `Oliver Twist`,
     owner: `Ali Ashraf`,
     reserved: 0,
     ownerEmail: "ali@gmail.com"
@@ -20,7 +20,7 @@ const createBooks = () => {
 
   book1 = {
     key: 1,
-    name: `A tale of two cities`,
+    title: `A tale of two cities`,
     owner: `Mostafa Ibrahim`,
     reserved: 1,
     ownerEmail: "mostafa@gmail.com"

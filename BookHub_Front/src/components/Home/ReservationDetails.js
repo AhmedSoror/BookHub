@@ -75,6 +75,7 @@ export default class ReservationDetails extends Component {
             style={styles.input}
             autoFocus={true}
             editable={this.props.item.reserved == 0}
+            value={this.props.item.reserved == 1?this.props.borrowerName:""}
             onChangeText={txt => {
               this.setState({ borrowerName: txt });
             }}
@@ -86,6 +87,7 @@ export default class ReservationDetails extends Component {
           <TextInput
             style={styles.input}
             editable={this.props.item.reserved == 0}
+            value={this.props.item.reserved == 1?this.props.borrowerEmail:""}
             autoCompleteType={"email"}
             keyboardType={"email-address"}
             onChangeText={txt => {
@@ -99,6 +101,7 @@ export default class ReservationDetails extends Component {
           <TextInput
             style={styles.input}
             editable={this.props.item.reserved == 0}
+            value={this.props.item.reserved == 1?this.props.borrowerPhone:""}
             keyboardType={"phone-pad"}
             onChangeText={txt => {
               this.setState({ phoneNumber: txt });

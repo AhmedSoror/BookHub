@@ -12,17 +12,6 @@ import {
 import Collapsible from "react-native-collapsible";
 import { Button } from "react-native-elements";
 
-const createBook = () => {
-  item = {
-    key: 0,
-    name: `Oliver Twist Book`,
-    owner: `Ali Mohammed`,
-    reserved: 0,
-    ownerEmail: "ali@gmail.com"
-  };
-  return item;
-};
-
 export default class SimpleDetailedCard extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +34,7 @@ export default class SimpleDetailedCard extends Component {
       <View style={styles.container}>
         <View style={styles.buttonView}>
           <Button
-            title={this.props.book.name}
+            title={this.props.book.title}
             onPress={() => {
               this.setState({
                 isCollapsed: !this.state.isCollapsed

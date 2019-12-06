@@ -9,6 +9,29 @@ import CircleButton from "react-native-circle-button";
 import BookCard from "./BookCard";
 import AddBook from "./AddBook";
 
+const createBooks = () => {
+  items = [];
+
+  book = {
+    key: 0,
+    title: `Oliver Twist`,
+    owner: `Ali Ashraf`,
+    reserved: 0,
+    ownerEmail: "ali@gmail.com"
+  };
+  items.push(book);
+
+  book1 = {
+    key: 1,
+    title: `A tale of two cities`,
+    owner: `Ali Ashraf`,
+    reserved: 1,
+    ownerEmail: "ali@gmail.com"
+  };
+  items.push(book1);
+
+  return items;
+};
 class UserBook extends Component {
   static navigationOptions = {
     title: "My books"
@@ -17,7 +40,8 @@ class UserBook extends Component {
     super(props);
     this.state = {
       isCollapsed: true,
-      reservationVisible: false
+      reservationVisible: false,
+      itemList: createBooks()
     };
   }
   hideDetails = () => {
@@ -25,31 +49,34 @@ class UserBook extends Component {
       reservationVisible: false
     });
   };
-  showDetails(item) {
+  showDetails() {
     this.setState({
-      reservationVisible: true,
-      selectedItem: item
+      reservationVisible: true
     });
   }
 
   render() {
+    const userBookCards = this.state.itemList.map(item => {
+      return <BookCard book={item} key={item.key} />;
+    });
+
     return (
       <View style={styles.container}>
-        <BookCard title="Oliver Twist" />
+        {userBookCards}
+
         <View
           style={{ flex: 1, position: "absolute", bottom: "2%", right: "2%" }}
         >
           <CircleButton
             size={45}
             onPressButtonRight={() => {
-              this.showDetails(item);
+              this.showDetails();
             }}
           />
         </View>
         <AddBook
           visible={this.state.reservationVisible}
           onModalClosed={this.hideDetails}
-           
         />
       </View>
     );
