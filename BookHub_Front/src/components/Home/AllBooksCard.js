@@ -21,15 +21,12 @@ export default class AllBooksCard extends Component {
       isCollapsed: true,
       reservationVisible: false,
       owner: null
-      // book: createBook()
     };
   }
   async componentDidMount() {
-    // console.log(this.props.book.owner_id.$oid);
     await axios
       .get(`/users/${this.props.book.owner_id.$oid}`)
       .then(response => {
-        // console.log(response.data);
         this.setState({
           owner: response.data
         });
@@ -74,7 +71,6 @@ export default class AllBooksCard extends Component {
                   ]}
                   onPress={() => {
                     // this.showDetails(item);
-                    console.log(this.state.owner.email);
                   }}
                 >
                   <Text
