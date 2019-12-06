@@ -26,24 +26,21 @@ class Login extends Component {
           "869039466780-d7a4t533o0iqq8s38lkcanekp2djj8f6.apps.googleusercontent.com"
       });
       if (type === "success") {
-        console.log("token: " + accessToken);
-        // console.log(user);
         this.props.userLogin(user);
-        const payload = {
-          email: user.email,
-          name: user.name
-        };
-        console.log(payload);
-        // login in our database
+
         await axios
-          .post("/users", { payload })
+          .post("/users", {
+            email: user.email,
+            familyName: user.familyName,
+            givenName: user.givenName,
+            name: user.name,
+            id: user.id,
+            photoUrl: user.photoUrl
+          })
           .then(response => {
-            console.log("received data from axios:");
-            console.log(response);
             if (response.status === 200) {
-              this.props.userLogin(response.data.user);           // ask backend to return object "user"
+              this.props.userLogin(response.data.user); // ask backend to return object "user"
               this.props.navigation.navigate("HomeScreen");
-             
             }
           })
           .catch(error => {
@@ -164,7 +161,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     user: state.login.user
-
   };
 };
 
