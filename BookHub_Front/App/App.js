@@ -8,7 +8,7 @@ import {
 } from "react-navigation";
 import Login from "../src/components/LoginScreen/Login";
 import AllBooks from "../src/components/Home/AllBooks";
-import UserBooks from "../src/components/Home/UserBooks";
+import MyBooks from "../src/components/Home/MyBooks";
 
 
 import { connect } from "react-redux";
@@ -22,7 +22,7 @@ const AppNavigationContainer = createAppContainer(
         screen: AllBooks
       },
       TabTwo: {
-        screen: UserBooks
+        screen: MyBooks
       }
     },
     {
@@ -45,8 +45,8 @@ const AppNavigator = createSwitchNavigator(
     HomeScreen: AppNavigationContainer,
   },
   {
-    // initialRouteName: "Login"
-    initialRouteName: "HomeScreen"
+    initialRouteName: "Login"
+    // initialRouteName: "HomeScreen"
   }
 );
 
