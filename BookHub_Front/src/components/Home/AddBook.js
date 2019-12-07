@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import {
   Modal,
   View,
-  Image,
   Text,
   Button,
   StyleSheet,
@@ -21,24 +20,25 @@ class AddBook extends Component {
   }
 
   async addBook() {
-    console.log(this.props.user);
-    await axios
-      .post(`/books/`, {
-        "title":this.state.bookName,
-        "author": "",
-        "owner": this.props.user.id,
-        "reserved": 0,
-        "borrower": this.props.user.id        
-      })
-      .then(response => {
-        if (response.status === 200) {
-          Alert.alert("Book added successfully");
-          this.props.onModalClosed
-        }
-      })
-      .catch(error => {
-        console.log(`add book error: ${error}`);
-      });
+    console.log("add book L24 ");
+    console.log("add book L24 ",this.props.user);
+    // await axios
+    //   .post(`/books/`, {
+    //     "title":this.state.bookName,
+    //     "author": "",
+    //     "owner": this.props.user.id,
+    //     "reserved": 0,
+    //     "borrower": this.props.user.id        
+    //   })
+    //   .then(response => {
+    //     if (response.status === 200) {
+    //       Alert.alert("Book added successfully");
+    //       this.props.onModalClosed
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(`add book error: ${error}`);
+    //   });
   }
   
   
@@ -57,7 +57,6 @@ class AddBook extends Component {
               style={styles.input}
               autoFocus={true}
               onChangeText={txt => {
-                console.log("add book L60 ",this.props.user);
                 this.setState({ bookName: txt });
               }}
             />
