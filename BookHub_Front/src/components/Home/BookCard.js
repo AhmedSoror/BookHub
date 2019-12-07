@@ -20,7 +20,7 @@ export default class BookCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCollapsed: true,
+      isCollapsed: false,
       reservationVisible: false,
       borrower: null
     };
@@ -32,7 +32,6 @@ export default class BookCard extends Component {
         this.setState({
           borrower: response.data
         });
-      
       })
       .catch(error => {
         console.log(`book card error: ${error}`);
@@ -51,78 +50,73 @@ export default class BookCard extends Component {
   }
 
   render() {
-    return (
+    return this.state.borrower ? (
       <View style={styles.container}>
-        <View style={styles.buttonView}>
-          <Button
-            title={this.props.book.title}
-            onPress={() => {
-              this.setState({
-                isCollapsed: !this.state.isCollapsed
-              });
-             
-            }}
-          />
-        </View>
-
-        <Collapsible collapsed={this.state.isCollapsed}>
-          <View style={styles.gridView}>
-            {this.state.borrower ? (
-              <TouchableOpacity
+        <View style={styles.gridView}>
+          {this.state.borrower ? (
+            <TouchableOpacity
+              style={[
+                styles.itemContainer,
+                {
+                  backgroundColor:
+                    this.props.book.reserved == 1 ? "#757575" : "#75e900"
+                }
+              ]}
+              onPress={() => {
+                this.showDetails(this.props.book);
+              }}
+            >
+              <Text
                 style={[
-                  styles.itemContainer,
+                  styles.itemName,
+                  { color: this.props.book.reserved == 1 ? "white" : "black" }
+                ]}
+              >
+                {/* create method to get borrow name */}
+                {`Borrower Name: ${
+                  this.props.book.reserved == 1 ? this.state.borrower.name : "-"
+                }`}
+              </Text>
+              <Text
+                style={[
+                  styles.itemName,
                   {
-                    backgroundColor:
-                      this.props.book.reserved == 1 ? "#757575" : "#75e900"
+                    color: this.props.book.reserved == 1 ? "white" : "black"
                   }
                 ]}
-                onPress={() => {
-                  this.showDetails(this.props.book);
-                }}
               >
-                <Text
-                  style={[
-                    styles.itemName,
-                    { color: this.props.book.reserved == 1 ? "white" : "black" }
-                  ]}
-                >
-                  {/* create method to get borrow name */}
-                  {`Borrower Name: ${this.props.book.reserved == 1 ?this.state.borrower.name:"-"}`}
-                </Text>
-                <Text
-                  style={[
-                    styles.itemName,
-                    {
-                      color: this.props.book.reserved == 1 ? "white" : "black"
-                    }
-                  ]}
-                >
-                  {`Borrower Email: ${this.props.book.reserved == 1 ?this.state.borrower.email:"-"}`}
-                </Text>
-                <Text
-                  style={[
-                    styles.itemName,
-                    { color: this.props.book.reserved == 1 ? "white" : "black" }
-                  ]}
-                >
-                  {`Phone Number: ${this.props.book.reserved == 1 ?this.state.borrower.phone_number:"-"}`}
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <Text>{"Loading ...."}</Text>
-            )}
-          </View>
-        </Collapsible>
-        {this.state.borrower ? (<ReservationDetails
+                {`Borrower Email: ${
+                  this.props.book.reserved == 1
+                    ? this.state.borrower.email
+                    : "-"
+                }`}
+              </Text>
+              <Text
+                style={[
+                  styles.itemName,
+                  { color: this.props.book.reserved == 1 ? "white" : "black" }
+                ]}
+              >
+                {`Phone Number: ${
+                  this.props.book.reserved == 1
+                    ? this.state.borrower.phone_number
+                    : "-"
+                }`}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <Text>{"Loading ...."}</Text>
+          )}
+        </View>
+        <ReservationDetails
           visible={this.state.reservationVisible}
           onModalClosed={this.hideDetails}
           book={this.props.book}
-          borrower= {this.state.borrower}
-        />)
-        :(<View></View>)
-        
-        }
+          borrower={this.state.borrower}
+        />
       </View>
+    ) : (
+    <View><Text>{"Loading ...."}</Text>;</View>
     );
   }
 }

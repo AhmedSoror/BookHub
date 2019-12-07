@@ -132,30 +132,6 @@ class MyBooks extends Component {
     if (userBookCards) {
       return (
         <Container>
-          {/* <Content>
-            <List>
-              <ListItem thumbnail>
-                <Left>
-                  <Thumbnail
-                    square
-                    source={{ uri: "../../../assets/book.png" }}
-                  />
-                </Left>
-                <Body>
-                  <Text>Sankhadeep</Text>
-                  <Text note numberOfLines={3}>
-                    Its time to build a difference . .
-                  </Text>
-                </Body>
-                <Right>
-                  <Button transparent>
-                    <Text>View</Text>
-                  </Button>
-                </Right>
-              </ListItem>
-            </List>
-          </Content> */}
-
           <Content>
             <List
               dataArray={this.state.bookList}
@@ -170,7 +146,7 @@ class MyBooks extends Component {
                   <Body>
                     <Text>{book.title}</Text>
                     <Text note numberOfLines={3}>
-                      Its time to build a difference . .
+                      {book.reserved?"Reserved":"Available"}
                     </Text>
                   </Body>
                   <Right>
@@ -185,6 +161,8 @@ class MyBooks extends Component {
                   </Right>
                 </ListItem>
               )}
+              keyExtractor={(book, index) => index.toString()}
+
             ></List>
           </Content>
           <View
