@@ -73,7 +73,9 @@ class MyBooks extends Component {
     this.state = {
       loading: true,
       isCollapsed: true,
-      reservationVisible: false,
+      addBookVisible: false,
+      bookDetailsVisible: false,
+      bookSelected: null,
       bookList: createBooks()
       // bookList: null
     };
@@ -100,17 +102,26 @@ class MyBooks extends Component {
     //   });
   }
 
-  hideDetails = () => {
+  hideAddBook = () => {
     this.setState({
-      reservationVisible: false
+      addBookVisible: false
     });
   };
-  showDetails() {
+  showAddBook() {
     this.setState({
-      reservationVisible: true
+      addBookVisible: true
     });
   }
-
+  hideBookDetails = () => {
+    this.setState({
+      bookDetailsVisible: false
+    });
+  };
+  showBookDetails() {
+    this.setState({
+      bookDetailsVisible: true
+    });
+  }
   renderItem = ({ item, index }) => {
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
@@ -118,18 +129,22 @@ class MyBooks extends Component {
 
     return <BookCard book={item} key={item._id.$oid} />;
   };
+
+  viewButtonAction = book => {
+    console.log("MyBooks L160: ", book);
+    this.setState({
+      bookSelected: book,
+      bookDetailsVisible: true
+    });
+    console.log("MyBooks L164: ", this.state.bookSelected);
+    // this.showBookDetails();
+  };
+
   render() {
     if (!this.state.isReady) {
       return <AppLoading />;
     }
-    userBookCards = null;
     if (this.state.bookList) {
-      userBookCards = this.state.bookList.map(book => {
-        return <BookCard book={book} key={book._id.$oid} />;
-      });
-    }
-
-    if (userBookCards) {
       return (
         <Container>
           <Content>
@@ -146,14 +161,19 @@ class MyBooks extends Component {
                   <Body>
                     <Text>{book.title}</Text>
                     <Text note numberOfLines={3}>
-                      {book.reserved?"Reserved":"Available"}
+                      {book.reserved ? "Reserved" : "Available"}
                     </Text>
                   </Body>
                   <Right>
                     <Button
                       transparent
                       onPress={() => {
-                        this.showDetails();
+                        console.log("MyBooks L160: ", book);
+                        this.setState({
+                          bookSelected: book,
+                          bookDetailsVisible: true
+                        });
+                        console.log("MyBooks L164: ", this.state.bookSelected);
                       }}
                     >
                       <Text>View</Text>
@@ -162,7 +182,6 @@ class MyBooks extends Component {
                 </ListItem>
               )}
               keyExtractor={(book, index) => index.toString()}
-
             ></List>
           </Content>
           <View
@@ -171,15 +190,24 @@ class MyBooks extends Component {
             <CircleButton
               size={45}
               onPressButtonRight={() => {
-                this.showDetails();
+                this.showAddBook();
               }}
             />
           </View>
-          <AddBook
-            visible={this.state.reservationVisible}
-            onModalClosed={this.hideDetails}
-            user={this.props.user}
-          />
+          <View>
+            <AddBook
+              visible={this.state.addBookVisible}
+              onModalClosed={this.hideAddBook}
+              user={this.props.user}
+            />
+          </View>
+          <View>
+            <BookCard
+              visible={this.state.bookDetailsVisible}
+              onModalClosed={this.hideBookDetails}
+              book={this.state.bookSelected}
+            />
+          </View>
         </Container>
       );
     } else {

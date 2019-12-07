@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
+  Modal,
   View,
   Text,
   Alert,
@@ -26,16 +27,19 @@ export default class BookCard extends Component {
     };
   }
   async componentDidMount() {
-    await axios
-      .get(`/users/${this.props.book.borrower_id.$oid}`)
-      .then(response => {
-        this.setState({
-          borrower: response.data
+    console.log("BookCard L31: ", this.props.book);
+    if (this.props.book) {
+      await axios
+        .get(`/users/${this.props.book.borrower_id.$oid}`)
+        .then(response => {
+          this.setState({
+            borrower: response.data
+          });
+        })
+        .catch(error => {
+          console.log(`book card error: ${error}`);
         });
-      })
-      .catch(error => {
-        console.log(`book card error: ${error}`);
-      });
+    }
   }
   hideDetails = () => {
     this.setState({
@@ -50,74 +54,98 @@ export default class BookCard extends Component {
   }
 
   render() {
-    return this.state.borrower ? (
-      <View style={styles.container}>
-        <View style={styles.gridView}>
-          {this.state.borrower ? (
-            <TouchableOpacity
-              style={[
-                styles.itemContainer,
-                {
-                  backgroundColor:
-                    this.props.book.reserved == 1 ? "#757575" : "#75e900"
-                }
-              ]}
-              onPress={() => {
-                this.showDetails(this.props.book);
-              }}
-            >
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.props.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {/* create method to get borrow name */}
-                {`Borrower Name: ${
-                  this.props.book.reserved == 1 ? this.state.borrower.name : "-"
-                }`}
-              </Text>
-              <Text
-                style={[
-                  styles.itemName,
-                  {
-                    color: this.props.book.reserved == 1 ? "white" : "black"
-                  }
-                ]}
-              >
-                {`Borrower Email: ${
-                  this.props.book.reserved == 1
-                    ? this.state.borrower.email
-                    : "-"
-                }`}
-              </Text>
-              <Text
-                style={[
-                  styles.itemName,
-                  { color: this.props.book.reserved == 1 ? "white" : "black" }
-                ]}
-              >
-                {`Phone Number: ${
-                  this.props.book.reserved == 1
-                    ? this.state.borrower.phone_number
-                    : "-"
-                }`}
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <Text>{"Loading ...."}</Text>
-          )}
-        </View>
-        <ReservationDetails
-          visible={this.state.reservationVisible}
-          onModalClosed={this.hideDetails}
-          book={this.props.book}
-          borrower={this.state.borrower}
-        />
-      </View>
-    ) : (
-    <View><Text>{"Loading ...."}</Text>;</View>
-    );
+    if (this.props.book) {
+      return (
+        <Modal
+          onRequestClose={this.props.onModalClosed}
+          visible={this.props.visible}
+          animationType="slide"
+        >
+          <View style={styles.container}>
+            <View style={styles.gridView}>
+              {this.state.borrower ? (
+                <TouchableOpacity
+                  style={[
+                    styles.itemContainer,
+                    {
+                      backgroundColor:
+                        this.props.book.reserved == 1 ? "#757575" : "#75e900"
+                    }
+                  ]}
+                  onPress={() => {
+                    this.showDetails(this.props.book);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.itemName,
+                      {
+                        color: this.props.book.reserved == 1 ? "white" : "black"
+                      }
+                    ]}
+                  >
+                    {/* create method to get borrow name */}
+                    {`Borrower Name: ${
+                      this.props.book.reserved == 1
+                        ? this.state.borrower.name
+                        : "-"
+                    }`}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.itemName,
+                      {
+                        color: this.props.book.reserved == 1 ? "white" : "black"
+                      }
+                    ]}
+                  >
+                    {`Borrower Email: ${
+                      this.props.book.reserved == 1
+                        ? this.state.borrower.email
+                        : "-"
+                    }`}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.itemName,
+                      {
+                        color: this.props.book.reserved == 1 ? "white" : "black"
+                      }
+                    ]}
+                  >
+                    {`Phone Number: ${
+                      this.props.book.reserved == 1
+                        ? this.state.borrower.phone_number
+                        : "-"
+                    }`}
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <Text>{"Loading ...."}</Text>
+              )}
+            </View>
+            <ReservationDetails
+              visible={this.state.reservationVisible}
+              onModalClosed={this.hideDetails}
+              book={this.props.book}
+              borrower={this.state.borrower}
+            />
+          </View>
+        </Modal>
+      );
+    } else {
+      return (
+        <Modal
+          onRequestClose={this.props.onModalClosed}
+          visible={this.props.visible}
+          animationType="slide"
+        >
+          <View>
+            <Text>Loading.....</Text>
+          </View>
+        </Modal>
+      );
+    }
   }
 }
 
