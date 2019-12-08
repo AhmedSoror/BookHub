@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, View, FlatList, Image } from "react-native";
+import { StyleSheet, View, FlatList, Image, TouchableOpacity } from "react-native";
 // import { Button } from "react-native-elements";
 import {
   Container,
@@ -23,49 +23,9 @@ import CircleButton from "react-native-circle-button";
 import axios from "axios";
 axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
-import BookCard from "./BookCard";
 import AddBook from "./AddBook";
 import ReservationDetails from "./ReservationDetails";
 
-const createBooks = () => {
-  items = [];
-
-  book = {
-    _id: {
-      $oid: "5dea8a74f668220001f3df99"
-    },
-    author: "charles dickenes",
-    borrower_id: {
-      $oid: "5dea8a64f668220001f3df98"
-    },
-    days_to_borrow: null,
-    owner_id: {
-      $oid: "5dea8a64f668220001f3df98"
-    },
-    reserved: 0,
-    title: "Oliver Twist"
-  };
-  items.push(book);
-
-  book1 = {
-    _id: {
-      $oid: "5dea8a9cf668220001f3df9a"
-    },
-    author: "charles dickenes",
-    borrower_id: {
-      $oid: "5dea8160f668220001f3df95"
-    },
-    days_to_borrow: null,
-    owner_id: {
-      $oid: "5dea8160f668220001f3df95"
-    },
-    reserved: 1,
-    title: "A tale of two cities"
-  };
-  items.push(book1);
-
-  return items;
-};
 class MyBooks extends Component {
   static navigationOptions = {
     title: "My books"
@@ -85,30 +45,15 @@ class MyBooks extends Component {
       bookList: null
     };
   }
-  async getBorrower(book) {
-    await axios
-      // .get(`/users/${this.state.bookSelected.borrower_id.$oid}`)
-      .get(`/users/${book.borrower_id.$oid}`)
-      .then(response => {
-        this.setState({
-          bookSelected: book,
-          bookDetailsVisible: true,
-          bookSelectedBorrower: response.data
-        });
-      })
-      .catch(error => {
-        console.log(`MyBooks L93 error: ${error}`);
-      });
-  }
-
   async componentDidMount() {
     await Font.loadAsync({
       Roboto: require("../../../node_modules/native-base/Fonts/Roboto.ttf"),
-
       Roboto_medium: require("../../../node_modules/native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ isReady: true });
-    // console.log(`/user_books/${this.props.user._id.$oid}`);
+    this.fetchBooks();
+  }
+  async fetchBooks(){
     await axios
       .get(`/user_books/${this.props.user._id.$oid}`)
       .then(response => {
@@ -143,43 +88,27 @@ class MyBooks extends Component {
       this.setState({
         bookList: newList
       });
-      console.log("MyBooks L132 ", this.state.bookList);
     }
-    // updateBookBorrowers(newBookList);
-  }
-  updateBookBorrowers(newBookList) {
-    this.setState({
-      bookList: newBookList
-    });
   }
 
   hideAddBook = () => {
     this.setState({
       addBookVisible: false
     });
+    this.fetchBooks();
   };
   showAddBook() {
     this.setState({
       addBookVisible: true
     });
   }
-  hideBookDetails = () => {
-    this.setState({
-      bookDetailsVisible: false
-    });
-  };
-  showBookDetails() {
-    this.setState({
-      bookDetailsVisible: true
-    });
-  }
 
-  hideDetails = () => {
+  hideReservation = () => {
     this.setState({
       reservationVisible: false
     });
   };
-  showDetails(item) {
+  showReservation(item) {
     this.setState({
       reservationVisible: true,
       selectedItem: item
@@ -199,20 +128,27 @@ class MyBooks extends Component {
               renderRow={book => (
                 <ListItem thumbnail>
                   <Left>
-                    {/* <Thumbnail
-                      square
-                      source={{ uri: "../../../assets/google_login.png" }}
-                    /> */}
                     <Image
                       source={require("../../../assets/book.png")}
                       style={styles.ImageIconStyle}
                     />
                   </Left>
                   <Body>
-                    <Text>{book.title}</Text>
-                    <Text note numberOfLines={3}>
-                      {book.reserved ? "Reserved" : "Available"}
-                    </Text>
+                    <TouchableOpacity  onPress={async () => {
+                        newBooks = this.state.bookList;
+                        for (i = 0; i < newBooks.length; i++) {
+                          if (newBooks[i]._id.$oid == book._id.$oid) {
+                            newBooks[i].isCollapsed = !newBooks[i].isCollapsed;
+                          }
+                        }
+                        await this.setState({ bookList: newBooks });
+                        console.log(this.state.bookList);
+                      }}>
+                      <Text>{book.title}</Text>
+                      <Text note numberOfLines={3}>
+                        {book.reserved ? "Reserved" : "Available"}
+                      </Text>
+                    </TouchableOpacity>
                     <Collapsible
                       collapsed={
                         book.isCollapsed == undefined ? true : book.isCollapsed
@@ -231,19 +167,11 @@ class MyBooks extends Component {
                     <Button
                       transparent
                       onPress={async () => {
-                        newBooks = this.state.bookList;
-                        for (i = 0; i < newBooks.length; i++) {
-                          if (newBooks[i]._id.$oid == book._id.$oid) {
-                            newBooks[i].isCollapsed = !newBooks[i].isCollapsed;
-                          }
-                        }
+                        this.setState({
+                          bookSelected:book
+                        })
+                        this.showReservation();
 
-                        await this.setState({ bookList: newBooks });
-                        console.log(this.state.bookList);
-                        // await this.setState({
-                        //   bookInfoCollapsed: !this.state.bookInfoCollapsed
-                        // });
-                        // console.log("MyBooks L164: ", this.state);
                       }}
                     >
                       <Text>View</Text>
@@ -273,17 +201,11 @@ class MyBooks extends Component {
           </View>
           {this.state.bookSelected ? (
             <View>
-              {/* <BookCard
-                visible={this.state.bookDetailsVisible}
-                onModalClosed={this.hideBookDetails}
-                book={this.state.bookSelected}
-                borrower={this.state.bookSelectedBorrower}
-              /> */}
               <ReservationDetails
                 visible={this.state.reservationVisible}
-                onModalClosed={this.hideDetails}
+                onModalClosed={this.hideReservation}
                 book={this.state.bookSelected}
-                borrower={this.state.bookSelectedBorrower}
+                borrower={this.state.bookSelected.borrower}
               />
             </View>
           ) : (
@@ -317,9 +239,8 @@ const styles = StyleSheet.create({
     padding: 2,
     margin: 2,
     height: 30,
-    width: 30,
-    // resizeMode: "stretch"
-  },
+    width: 30
+  }
 });
 
 const mapStateToProps = state => {
