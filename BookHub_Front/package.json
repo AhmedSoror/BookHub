@@ -15,7 +15,6 @@
     "expo-constants": "^6.0.0",
     "expo-font": "^6.0.1",
     "expo-google-app-auth": "^7.0.0",
-    "lottie-react-native": "^3.3.2",
     "moment": "^2.24.0",
     "native": "^0.3.3",
     "native-base": "^2.13.5",

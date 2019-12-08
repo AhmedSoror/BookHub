@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
-// import PTRView from 'react-native-pull-to-refresh';
-
 import {
   Container,
   Content,
