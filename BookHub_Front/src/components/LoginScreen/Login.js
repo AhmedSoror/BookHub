@@ -26,36 +26,33 @@ class Login extends Component {
           "869039466780-d7a4t533o0iqq8s38lkcanekp2djj8f6.apps.googleusercontent.com"
       });
       if (type === "success") {
-        // console.log("login L29: ",user);
-        this.props.userLogin(user);
-        // console.log("login L31: ",this.props.user);
-        await axios
-          .post("/users", {
-            email: user.email,
-            familyName: user.familyName,
-            givenName: user.givenName,
-            name: user.name,
-            id: user.id,
-            photoUrl: user.photoUrl
-          })
-          .then(response => {
-            if (response.status === 200) {
-              console.log(`login l42:  ${response.data.user}`);
-              this.props.userLogin(response.data.user); // ask backend to return object "user"
-              this.props.navigation.navigate("HomeScreen");
-            }
+        const payLoad = {
+          email: user.email,
+          familyName: user.familyName,
+          givenName: user.givenName,
+          id: user.id,
+          name: user.name,
+          photoUrl: user.photoUrl
+        };
+        axios
+          .post("/users", payLoad)
+          .then(async (response) => {
+            // console.log("login 42 response: ", response.data);
+            await this.props.userLogin(response.data);
+            console.log("login 42 response: ", this.props.user);
+            this.props.navigation.navigate("HomeScreen");
+
           })
           .catch(error => {
-            console.log(`Login error: ${error}`);
+            console.log(`all books error: ${error}`);
           });
-
-        this.props.navigation.navigate("HomeScreen");
       }
     } catch (e) {
       console.log("error", e);
     }
   }
 
+  
   render() {
     return (
       <View style={styles.inputContainer}>
