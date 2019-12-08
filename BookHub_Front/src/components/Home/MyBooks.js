@@ -87,19 +87,19 @@ class MyBooks extends Component {
       Roboto_medium: require("../../../node_modules/native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ isReady: true });
+    await axios
+      .get(`/user_books/${this.props.user.id}`)
+      .then(response => {
+        this.setState({
+          bookList: response.data
+        });
+      })
+      .catch(error => {
+        console.log(`my books error: ${error}`);
+      });
   }
 
   async componentDidMountOld() {
-    // axios
-    //   .get(`/user_books/${this.props.user.id}`)
-    //   .then(response => {
-    //     this.setState({
-    //       bookList: response.data
-    //     });
-    //   })
-    //   .catch(error => {
-    //     console.log(`my books error: ${error}`);
-    //   });
   }
 
   hideAddBook = () => {
@@ -167,13 +167,13 @@ class MyBooks extends Component {
                   <Right>
                     <Button
                       transparent
-                      onPress={() => {
+                      onPress={async() => {
                         console.log("MyBooks L160: ", book);
-                        this.setState({
+                       await this.setState({
                           bookSelected: book,
                           bookDetailsVisible: true
                         });
-                        console.log("MyBooks L164: ", this.state.bookSelected);
+                        console.log("MyBooks L164: ", this.state);
                       }}
                     >
                       <Text>View</Text>
