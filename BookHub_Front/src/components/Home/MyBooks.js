@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, View, FlatList, Image, TouchableOpacity } from "react-native";
-// import { Button } from "react-native-elements";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+// import PTRView from 'react-native-pull-to-refresh';
+
 import {
   Container,
-  Header,
   Content,
   List,
   ListItem,
-  Thumbnail,
   Text,
   Left,
   Body,
@@ -34,14 +33,11 @@ class MyBooks extends Component {
     super(props);
     this.state = {
       loading: true,
-      isCollapsed: true,
       bookInfoCollapsed: true,
       addBookVisible: false,
-      bookDetailsVisible: false,
       reservationVisible: false,
       bookSelected: null,
       bookSelectedBorrower: null,
-      // bookList: createBooks()
       bookList: null
     };
   }
@@ -53,7 +49,7 @@ class MyBooks extends Component {
     this.setState({ isReady: true });
     this.fetchBooks();
   }
-  async fetchBooks(){
+  async fetchBooks() {
     await axios
       .get(`/user_books/${this.props.user._id.$oid}`)
       .then(response => {
@@ -134,7 +130,8 @@ class MyBooks extends Component {
                     />
                   </Left>
                   <Body>
-                    <TouchableOpacity  onPress={async () => {
+                    <TouchableOpacity
+                      onPress={async () => {
                         newBooks = this.state.bookList;
                         for (i = 0; i < newBooks.length; i++) {
                           if (newBooks[i]._id.$oid == book._id.$oid) {
@@ -143,7 +140,8 @@ class MyBooks extends Component {
                         }
                         await this.setState({ bookList: newBooks });
                         console.log(this.state.bookList);
-                      }}>
+                      }}
+                    >
                       <Text>{book.title}</Text>
                       <Text note numberOfLines={3}>
                         {book.reserved ? "Reserved" : "Available"}
@@ -168,10 +166,9 @@ class MyBooks extends Component {
                       transparent
                       onPress={async () => {
                         this.setState({
-                          bookSelected:book
-                        })
+                          bookSelected: book
+                        });
                         this.showReservation();
-
                       }}
                     >
                       <Text>View</Text>
