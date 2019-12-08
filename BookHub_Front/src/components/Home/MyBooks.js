@@ -182,18 +182,32 @@ class MyBooks extends Component {
           >
             <CircleButton
               size={45}
+              iconButtonCenter={require("../../../assets/circle.png")}
+              iconButtonLeft={require("../../../assets/refresh.png")}
+              iconButtonRight={require("../../../assets/add.png")}
+              iconButtonTop={require("../../../assets/icon.png")}
+              iconButtonBottom={require("../../../assets/icon.png")}
               onPressButtonRight={() => {
                 this.showAddBook();
               }}
+              onPressButtonLeft={() => {
+                this.fetchBooks();
+                console.log("MyBooks Line 190");
+              }}
             />
           </View>
-          <View>
-            <AddBook
-              visible={this.state.addBookVisible}
-              onModalClosed={this.hideAddBook}
-              user={this.props.user}
-            />
-          </View>
+          {this.props.user? (
+            <View>
+              <AddBook
+                visible={this.state.addBookVisible}
+                onModalClosed={this.hideAddBook}
+                user={this.props.user}
+              />
+            </View>
+          ) : (
+            <View></View>
+          )}
+
           {this.state.bookSelected ? (
             <View>
               <ReservationDetails
