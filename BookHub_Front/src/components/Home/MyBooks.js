@@ -137,7 +137,6 @@ class MyBooks extends Component {
                           }
                         }
                         await this.setState({ bookList: newBooks });
-                        console.log(this.state.bookList);
                       }}
                     >
                       <Text>{book.title}</Text>
@@ -169,7 +168,7 @@ class MyBooks extends Component {
                         this.showReservation();
                       }}
                     >
-                      <Text>View</Text>
+                      <Text>{book.reserved?"Unreserve":"Reserve"}</Text>
                     </Button>
                   </Right>
                 </ListItem>
@@ -185,8 +184,8 @@ class MyBooks extends Component {
               iconButtonCenter={require("../../../assets/circle.png")}
               iconButtonLeft={require("../../../assets/refresh.png")}
               iconButtonRight={require("../../../assets/add.png")}
-              iconButtonTop={require("../../../assets/icon.png")}
-              iconButtonBottom={require("../../../assets/icon.png")}
+              iconButtonBottom={require("../../../assets/logout.png")}
+              // iconButtonTop={require("../../../assets/icon.png")}
               onPressButtonRight={() => {
                 this.showAddBook();
               }}
@@ -194,6 +193,11 @@ class MyBooks extends Component {
                 this.fetchBooks();
                 console.log("MyBooks Line 190");
               }}
+              onPressButtonBottom={()=>{
+                this.props.navigation.navigate("Login");
+              }
+
+              }
             />
           </View>
           {this.props.user? (

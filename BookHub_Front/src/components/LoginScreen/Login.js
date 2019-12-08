@@ -39,7 +39,7 @@ class Login extends Component {
           .then(async (response) => {
             // console.log("login 42 response: ", response.data);
             await this.props.userLogin(response.data);
-            console.log("login 42 response: ", this.props.user);
+            // console.log("login 42 response: ", this.props.user);
             this.props.navigation.navigate("HomeScreen");
 
           })
