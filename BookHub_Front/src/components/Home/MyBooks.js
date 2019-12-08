@@ -76,10 +76,28 @@ class MyBooks extends Component {
       addBookVisible: false,
       bookDetailsVisible: false,
       bookSelected: null,
-      bookList: createBooks()
-      // bookList: null
+      bookSelectedOwner:null,
+      // bookList: createBooks()
+      bookList: null
     };
   }
+  async getBorrower(book) {
+    await axios
+      // .get(`/users/${this.state.bookSelected.borrower_id.$oid}`)
+      .get(`/users/${book.borrower_id.$oid}`)
+      .then(response => {
+        this.setState({
+          bookSelected: book,
+          bookDetailsVisible: true,
+          bookSelectedOwner: response.data
+          
+        });
+      })
+      .catch(error => {
+        console.log(`MyBooks L93 error: ${error}`);
+      });
+  }
+
   async componentDidMount() {
     await Font.loadAsync({
       Roboto: require("../../../node_modules/native-base/Fonts/Roboto.ttf"),
@@ -87,8 +105,9 @@ class MyBooks extends Component {
       Roboto_medium: require("../../../node_modules/native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ isReady: true });
+    console.log(`/user_books/${this.props.user._id.$oid}`);
     await axios
-      .get(`/user_books/${this.props.user.id}`)
+      .get(`/user_books/${this.props.user._id.$oid}`)
       .then(response => {
         this.setState({
           bookList: response.data
@@ -130,15 +149,7 @@ class MyBooks extends Component {
     return <BookCard book={item} key={item._id.$oid} />;
   };
 
-  viewButtonAction = book => {
-    console.log("MyBooks L160: ", book);
-    this.setState({
-      bookSelected: book,
-      bookDetailsVisible: true
-    });
-    console.log("MyBooks L164: ", this.state.bookSelected);
-    // this.showBookDetails();
-  };
+   
 
   render() {
     if (!this.state.isReady) {
@@ -169,10 +180,11 @@ class MyBooks extends Component {
                       transparent
                       onPress={async() => {
                         console.log("MyBooks L160: ", book);
-                       await this.setState({
-                          bookSelected: book,
-                          bookDetailsVisible: true
-                        });
+                      //  await this.setState({
+                      //     bookSelected: book,
+                      //     bookDetailsVisible: true
+                      //   });
+                        await this.getBorrower(book);
                         console.log("MyBooks L164: ", this.state);
                       }}
                     >
@@ -201,13 +213,18 @@ class MyBooks extends Component {
               user={this.props.user}
             />
           </View>
-          <View>
-            <BookCard
-              visible={this.state.bookDetailsVisible}
-              onModalClosed={this.hideBookDetails}
-              book={this.state.bookSelected}
-            />
-          </View>
+          {
+            this.state.bookSelected?(
+            <View>
+              <BookCard
+                visible={this.state.bookDetailsVisible}
+                onModalClosed={this.hideBookDetails}
+                book={this.state.bookSelected}
+                borrower={this.state.bookSelectedOwner}
+              />
+            </View>
+            ):(<View></View>)
+          }
         </Container>
       );
     } else {

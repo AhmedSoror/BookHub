@@ -23,24 +23,29 @@ export default class BookCard extends Component {
     this.state = {
       isCollapsed: false,
       reservationVisible: false,
-      borrower: null
+      //borrower: null
     };
   }
-  async componentDidMount() {
-    console.log("BookCard L31: ", this.props.book);
-    if (this.props.book) {
-      await axios
-        .get(`/users/${this.props.book.borrower_id.$oid}`)
-        .then(response => {
-          this.setState({
-            borrower: response.data
-          });
-        })
-        .catch(error => {
-          console.log(`book card error: ${error}`);
-        });
-    }
-  }
+  // async componentDidMount() {
+  //   console.log("BookCard L31: ", this.props.book);
+  //   if (this.props.book) {
+  //     this.getBorrower();
+  //   }
+  // }
+
+  // async getBorrower() {
+  //   await axios
+  //     .get(`/users/${this.props.book.borrower_id.$oid}`)
+  //     .then(response => {
+  //       this.setState({
+  //         borrower: response.data
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.log(`book card error: ${error}`);
+  //     });
+  // }
+
   hideDetails = () => {
     this.setState({
       reservationVisible: false
@@ -63,7 +68,7 @@ export default class BookCard extends Component {
         >
           <View style={styles.container}>
             <View style={styles.gridView}>
-              {this.state.borrower ? (
+              {this.props.borrower ? (
                 <TouchableOpacity
                   style={[
                     styles.itemContainer,
@@ -73,6 +78,7 @@ export default class BookCard extends Component {
                     }
                   ]}
                   onPress={() => {
+                    
                     this.showDetails(this.props.book);
                   }}
                 >
@@ -87,7 +93,7 @@ export default class BookCard extends Component {
                     {/* create method to get borrow name */}
                     {`Borrower Name: ${
                       this.props.book.reserved == 1
-                        ? this.state.borrower.name
+                        ? this.props.borrower.name
                         : "-"
                     }`}
                   </Text>
@@ -101,7 +107,7 @@ export default class BookCard extends Component {
                   >
                     {`Borrower Email: ${
                       this.props.book.reserved == 1
-                        ? this.state.borrower.email
+                        ? this.props.borrower.email
                         : "-"
                     }`}
                   </Text>
@@ -115,7 +121,7 @@ export default class BookCard extends Component {
                   >
                     {`Phone Number: ${
                       this.props.book.reserved == 1
-                        ? this.state.borrower.phone_number
+                        ? this.props.borrower.phone_number
                         : "-"
                     }`}
                   </Text>
@@ -128,7 +134,7 @@ export default class BookCard extends Component {
               visible={this.state.reservationVisible}
               onModalClosed={this.hideDetails}
               book={this.props.book}
-              borrower={this.state.borrower}
+              borrower={this.props.borrower}
             />
           </View>
         </Modal>
