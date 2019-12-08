@@ -21,7 +21,6 @@ import axios from "axios";
 axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 import AddBook from "./AddBook";
-import AddBook2 from "./AddBook2";
 import ReservationDetails from "./ReservationDetails";
 
 class MyBooks extends Component {
@@ -203,12 +202,7 @@ class MyBooks extends Component {
           </View>
           {this.props.user? (
             <View>
-              {/* <AddBook
-                visible={this.state.addBookVisible}
-                onModalClosed={this.hideAddBook}
-                user={this.props.user}
-              /> */}
-              <AddBook2
+              <AddBook
                 visible={this.state.addBookVisible}
                 onModalClosed={this.hideAddBook}
               />
