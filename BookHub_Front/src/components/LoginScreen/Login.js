@@ -12,7 +12,9 @@ import {
 } from "react-native";
 import { userLogin } from "../../store/actions/index";
 import axios from "axios";
-axios.defaults.baseURL = "http://172.17.0.2:3000/";
+// axios.defaults.baseURL = "http://172.17.0.2:3000/";
+import { URL } from "../../../config/config.js";
+axios.defaults.baseURL = URL;
 
 class Login extends Component {
   static navigationOptions = {

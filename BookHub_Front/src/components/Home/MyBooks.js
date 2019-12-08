@@ -18,7 +18,9 @@ import * as Font from "expo-font";
 
 import CircleButton from "react-native-circle-button";
 import axios from "axios";
-axios.defaults.baseURL = "http://172.17.0.2:3000/";
+// axios.defaults.baseURL = "http://172.17.0.2:3000/";
+import { URL } from "../../../config/config.js";
+axios.defaults.baseURL = URL;
 
 import AddBook from "./AddBook";
 import ReservationDetails from "./ReservationDetails";
@@ -138,7 +140,7 @@ class MyBooks extends Component {
                         await this.setState({ bookList: newBooks });
                       }}
                     >
-                      <Text>{book.title}</Text>
+                      <Text>{book?book.title:"loading..."}</Text>
                       <Text note numberOfLines={3}>
                         {book.reserved ? "Reserved" : "Available"}
                       </Text>

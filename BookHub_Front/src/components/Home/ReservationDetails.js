@@ -10,7 +10,9 @@ import {
   TextInput
 } from "react-native";
 import axios from "axios";
-axios.defaults.baseURL = "http://172.17.0.2:3000/";
+// axios.defaults.baseURL = "http://172.17.0.2:3000/";
+import { URL } from "../../../config/config.js";
+axios.defaults.baseURL = URL;
 
 class ReservationDetails extends Component {
   constructor(props) {
