@@ -19,27 +19,6 @@ class AddBook extends Component {
       bookName: ""
     };
   }
-  async addBook() {
-    console.log("add book L24 ");
-    console.log("add book L24 ", this.props.user);
-    // await axios
-    //   .post(`/books/`, {
-    //     "title":this.state.bookName,
-    //     "author": "",
-    //     "owner": this.props.user.id,
-    //     "reserved": 0,
-    //     "borrower": this.props.user.id
-    //   })
-    //   .then(response => {
-    //     if (response.status === 200) {
-    //       Alert.alert("Book added successfully");
-    //       this.props.onModalClosed
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(`add book error: ${error}`);
-    //   });
-  }
 
   render() {
     return (
@@ -83,8 +62,6 @@ class AddBook extends Component {
                   .catch(error => {
                     console.log(`add book error: ${error}`);
                   });
-
-                // console.log("Add2 L49, ", this.props.user);
               }}
             />
 

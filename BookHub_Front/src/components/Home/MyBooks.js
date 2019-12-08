@@ -68,7 +68,6 @@ class MyBooks extends Component {
         .then(response => {
           bookItem.borrower = response.data;
           bookItem.isCollapsed = true;
-          console.log("MyBooks L130 ", bookItem);
           newList[i] = bookItem;
         })
         .catch(error => {
@@ -191,7 +190,6 @@ class MyBooks extends Component {
               }}
               onPressButtonLeft={() => {
                 this.fetchBooks();
-                console.log("MyBooks Line 190");
               }}
               onPressButtonBottom={()=>{
                 this.props.navigation.navigate("Login");
