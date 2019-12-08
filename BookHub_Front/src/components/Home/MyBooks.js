@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity, Alert } from "react-native";
 import {
   Container,
   Content,
@@ -130,6 +130,37 @@ class MyBooks extends Component {
                   </Left>
                   <Body>
                     <TouchableOpacity
+                      onLongPress={() => {
+                        Alert.alert(
+                          "Delete Book",
+                          "Do you really wanna delete this book?",
+                          [
+                            {
+                              text: "Cancel",
+                              onPress: () => console.log("Cancel Pressed"),
+                              style: "cancel"
+                            },
+                            {
+                              text: "Confirm",
+                              onPress: async () => {
+                                await axios
+                                  .delete(
+                                    `/books/${book._id.$oid}`
+                                  )
+                                  .then(response => {
+                                    this.fetchBooks();
+                                  })
+                                  .catch(error => {
+                                    console.log(`my books error: ${error}`);
+                                  });
+                                console.log("delete");
+                              },
+                              style:{color: 'red'}
+                            }
+                          ],
+                          { cancelable: false }
+                        );
+                      }}
                       onPress={async () => {
                         newBooks = this.state.bookList;
                         for (i = 0; i < newBooks.length; i++) {
@@ -140,7 +171,7 @@ class MyBooks extends Component {
                         await this.setState({ bookList: newBooks });
                       }}
                     >
-                      <Text>{book?book.title:"loading..."}</Text>
+                      <Text>{book ? book.title : "loading..."}</Text>
                       <Text note numberOfLines={3}>
                         {book.reserved ? "Reserved" : "Available"}
                       </Text>
@@ -169,7 +200,7 @@ class MyBooks extends Component {
                         this.showReservation();
                       }}
                     >
-                      <Text>{book.reserved?"Unreserve":"Reserve"}</Text>
+                      <Text>{book.reserved ? "Unreserve" : "Reserve"}</Text>
                     </Button>
                   </Right>
                 </ListItem>
@@ -193,14 +224,12 @@ class MyBooks extends Component {
               onPressButtonLeft={() => {
                 this.fetchBooks();
               }}
-              onPressButtonBottom={()=>{
+              onPressButtonBottom={() => {
                 this.props.navigation.navigate("Login");
-              }
-
-              }
+              }}
             />
           </View>
-          {this.props.user? (
+          {this.props.user ? (
             <View>
               <AddBook
                 visible={this.state.addBookVisible}
