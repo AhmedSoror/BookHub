@@ -26,7 +26,7 @@ axios.defaults.baseURL = URL;
 
 class AllBooks extends Component {
   static navigationOptions = {
-    title: "My books"
+    title: "All books"
   };
   constructor(props) {
     super(props);
@@ -47,6 +47,7 @@ class AllBooks extends Component {
     });
     this.setState({ isReady: true });
     this.fetchBooks();
+    // this.fetchBooks();
   }
   async fetchBooks() {
     await axios
@@ -127,7 +128,7 @@ class AllBooks extends Component {
                       }
                     >
                       <Text>
-                        {book.owner ? `${book.owner.name}` : "loading..."}
+                        {book.owner ? `Owner: ${book.owner.name}\nEmail: ${book.owner.email}` : "loading..."}
                       </Text>
                     </Collapsible>
                   </Body>
@@ -143,12 +144,12 @@ class AllBooks extends Component {
             <CircleButton
               size={45}
               iconButtonCenter={require("../../../assets/circle.png")}
-              iconButtonLeft={require("../../../assets/refresh.png")}
-              iconButtonRight={require("../../../assets/add.png")}
+              iconButtonTop={require("../../../assets/refresh.png")}
               iconButtonBottom={require("../../../assets/logout.png")}
-              // iconButtonTop={require("../../../assets/icon.png")}
+              iconButtonRight={null}
+              iconButtonLeft={null}
 
-              onPressButtonLeft={() => {
+              onPressButtonTop={() => {
                 this.fetchBooks();
               }}
               onPressButtonBottom={() => {

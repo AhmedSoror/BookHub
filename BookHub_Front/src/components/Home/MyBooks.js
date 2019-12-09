@@ -102,6 +102,7 @@ class MyBooks extends Component {
     this.setState({
       reservationVisible: false
     });
+    this.fetchBooks();
   };
   showReservation(item) {
     this.setState({
@@ -144,9 +145,7 @@ class MyBooks extends Component {
                               text: "Confirm",
                               onPress: async () => {
                                 await axios
-                                  .delete(
-                                    `/books/${book._id.$oid}`
-                                  )
+                                  .delete(`/books/${book._id.$oid}`)
                                   .then(response => {
                                     this.fetchBooks();
                                   })
@@ -155,7 +154,7 @@ class MyBooks extends Component {
                                   });
                                 console.log("delete");
                               },
-                              style:{color: 'red'}
+                              style: { color: "red" }
                             }
                           ],
                           { cancelable: false }
@@ -173,7 +172,7 @@ class MyBooks extends Component {
                     >
                       <Text>{book ? book.title : "loading..."}</Text>
                       <Text note numberOfLines={3}>
-                        {book.reserved ? "Reserved" : "Available"}
+                        {book?(book.reserved ? "Reserved" : "Available"):""}
                       </Text>
                     </TouchableOpacity>
                     <Collapsible
@@ -181,12 +180,13 @@ class MyBooks extends Component {
                         book.isCollapsed == undefined ? true : book.isCollapsed
                       }
                     >
-                      <Text>
-                        {book.reserved == 1
+                      <Text style={styles.textInfo}>
+                        {book?
+                          (book.reserved == 1
                           ? book.borrower
-                            ? `${book.borrower.name}`
+                            ? `Borrowed by:\n ${book.borrower.name}\n Phone number:\n ${book.borrower.phone_number}\nEmail:\n ${book.borrower.email}\n `
                             : ""
-                          : "0"}
+                          : ""):"loading..."}
                       </Text>
                     </Collapsible>
                   </Body>
@@ -200,7 +200,7 @@ class MyBooks extends Component {
                         this.showReservation();
                       }}
                     >
-                      <Text>{book.reserved ? "Unreserve" : "Reserve"}</Text>
+                      <Text>{book?(book.reserved ? "Unreserve" : "Reserve"):""}</Text>
                     </Button>
                   </Right>
                 </ListItem>
@@ -214,14 +214,14 @@ class MyBooks extends Component {
             <CircleButton
               size={45}
               iconButtonCenter={require("../../../assets/circle.png")}
-              iconButtonLeft={require("../../../assets/refresh.png")}
-              iconButtonRight={require("../../../assets/add.png")}
+              iconButtonTop={require("../../../assets/refresh.png")}
               iconButtonBottom={require("../../../assets/logout.png")}
-              // iconButtonTop={require("../../../assets/icon.png")}
+              iconButtonRight={require("../../../assets/add.png")}
+              iconButtonLeft={null}
               onPressButtonRight={() => {
                 this.showAddBook();
               }}
-              onPressButtonLeft={() => {
+              onPressButtonTop={() => {
                 this.fetchBooks();
               }}
               onPressButtonBottom={() => {
@@ -267,6 +267,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     marginTop: 20
+  },
+  textInfo: {
+    fontSize:15
   },
   gridView: {
     marginTop: 20,

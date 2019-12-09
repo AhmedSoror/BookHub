@@ -34,6 +34,7 @@ class ReservationDetails extends Component {
       .then(response => {
         if (response.status === 200) {
           Alert.alert("Book is updated successfully");
+          this.props.onModalClosed();
         }
       })
       .catch(error => {
@@ -50,6 +51,7 @@ class ReservationDetails extends Component {
       .then(response => {
         if (response.status === 200) {
           Alert.alert("Book is now available");
+          this.props.onModalClosed();
         }
       })
       .catch(error => {
@@ -64,7 +66,7 @@ class ReservationDetails extends Component {
       this.unReserveBook();
     }
 
-    this.props.onModalClosed();
+    
   };
   render() {
     let modalContent = null;
