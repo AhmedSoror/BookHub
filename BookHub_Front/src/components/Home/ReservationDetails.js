@@ -37,6 +37,7 @@ class ReservationDetails extends Component {
         }
       })
       .catch(error => {
+        Alert.alert("There is no user registered with this email!");
         console.log(`reserve error: ${error}`);
       });
   }
