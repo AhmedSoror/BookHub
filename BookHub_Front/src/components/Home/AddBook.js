@@ -64,6 +64,7 @@ class AddBook extends Component {
                     console.log(`add book error: ${error}`);
                   });
               }}
+              disabled={this.state.bookName != "" ? false : true}
             />
 
             <Button

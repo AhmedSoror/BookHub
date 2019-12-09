@@ -19,7 +19,8 @@ class ReservationDetails extends Component {
     this.state = {
       borrowerName: "",
       borrowerEmail: "",
-      phoneNumber: ""
+      phoneNumber: "",
+      ValidEmail: false
     };
   }
 
@@ -65,9 +66,18 @@ class ReservationDetails extends Component {
     } else {
       this.unReserveBook();
     }
-
-    
   };
+
+  validate = text => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(text) === false) {
+      this.setState({ ValidEmail: false });
+      return false;
+    } else {
+      this.setState({ borrowerEmail: text, ValidEmail: true });
+    }
+  };
+
   render() {
     let modalContent = null;
     if (this.props.book) {
@@ -89,7 +99,9 @@ class ReservationDetails extends Component {
             returnKeyType="next"
             onSubmitEditing={() => this.emailInput.focus()}
           />
-
+          <Text style={styles.invalidEmail}>
+            {this.state.borrowerName? "" : "* Please enter a name!"}
+          </Text>
           <Text style={styles.text}>{"Email:"}</Text>
           <TextInput
             style={styles.input}
@@ -99,13 +111,15 @@ class ReservationDetails extends Component {
             }
             autoCompleteType={"email"}
             keyboardType={"email-address"}
-            onChangeText={txt => {
-              this.setState({ borrowerEmail: txt });
-            }}
+            // onChangeText={txt => {this.setState({ borrowerEmail: txt });}}
+            onChangeText={text => this.validate(text)}
             ref={input => (this.emailInput = input)}
             returnKeyType="next"
             onSubmitEditing={() => this.phoneInput.focus()}
           />
+          <Text style={styles.invalidEmail}>
+            {this.state.borrowerEmail?(this.state.ValidEmail ? "" : "* Email is not valid!!"):"* Please enter a valid email!"}
+          </Text>
           <Text style={styles.text}>{"Phone Number:"}</Text>
           <TextInput
             style={styles.input}
@@ -121,6 +135,9 @@ class ReservationDetails extends Component {
             }}
             ref={input => (this.phoneInput = input)}
           />
+          <Text style={styles.invalidEmail}>
+            {this.state.phoneNumber? "" : "* Please enter a phone number!"}
+          </Text>
         </View>
       );
     }
@@ -151,11 +168,17 @@ class ReservationDetails extends Component {
               }
               visible={this.props.book}
               onPress={this.actionButtonFunction}
-              disabled={this.props.book
+              disabled={
+                this.props.book
                   ? this.props.book.reserved == 1
                     ? false
-                    : (this.state.borrowerName!=""&&this.state.borrowerEmail!=""&&this.state.phoneNumber!="" ? false  : true)
-                  : true}
+                    : this.state.borrowerName != "" &&
+                      this.state.borrowerEmail != "" &&
+                      this.state.phoneNumber != ""
+                    ? false
+                    : true
+                  : true
+              }
             />
 
             <Button
@@ -191,6 +214,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20
+  },
+  invalidEmail: {
+    fontSize: 10,
+    color: "red"
   }
 });
 
