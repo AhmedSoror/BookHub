@@ -150,6 +150,11 @@ class ReservationDetails extends Component {
               }
               visible={this.props.book}
               onPress={this.actionButtonFunction}
+              disabled={this.props.book
+                  ? this.props.book.reserved == 1
+                    ? false
+                    : (this.state.borrowerName!=""&&this.state.borrowerEmail!=""&&this.state.phoneNumber!="" ? false  : true)
+                  : true}
             />
 
             <Button
