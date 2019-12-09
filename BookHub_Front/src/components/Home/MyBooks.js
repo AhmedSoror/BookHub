@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   textInfo: {
-    fontSize:15
+    fontSize:12
   },
   gridView: {
     marginTop: 20,
