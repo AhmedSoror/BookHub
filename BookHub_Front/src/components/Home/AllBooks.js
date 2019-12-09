@@ -20,9 +20,6 @@ import CircleButton from "react-native-circle-button";
 import axios from "axios";
 import { URL } from "../../../config/config.js";
 axios.defaults.baseURL = URL;
-// axios.defaults.baseURL = "http://172.17.0.2:3000/";
-
-
 
 class AllBooks extends Component {
   static navigationOptions = {
@@ -66,7 +63,6 @@ class AllBooks extends Component {
     for (i = 0; i < newList.length; i++) {
       bookItem = newList[i];
       await axios
-        // .get(`/users/${bookItem.borrower_id.$oid}`)
         .get(`/users/${bookItem.owner_id.$oid}`)
         .then(response => {
           bookItem.owner = response.data;

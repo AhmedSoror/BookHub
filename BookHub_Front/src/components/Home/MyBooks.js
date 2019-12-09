@@ -18,7 +18,6 @@ import * as Font from "expo-font";
 
 import CircleButton from "react-native-circle-button";
 import axios from "axios";
-// axios.defaults.baseURL = "http://172.17.0.2:3000/";
 import { URL } from "../../../config/config.js";
 axios.defaults.baseURL = URL;
 

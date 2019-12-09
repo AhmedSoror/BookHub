@@ -10,7 +10,6 @@ import {
   TextInput
 } from "react-native";
 import axios from "axios";
-// axios.defaults.baseURL = "http://172.17.0.2:3000/";
 import { URL } from "../../../config/config.js";
 axios.defaults.baseURL = URL;
 
@@ -175,8 +174,6 @@ const styles = StyleSheet.create({
     fontSize: 28
   },
   input: {
-    // textAlign: "center",
-    // width: "100%",
     paddingLeft: 5,
     borderColor: "gray",
     borderWidth: 1,

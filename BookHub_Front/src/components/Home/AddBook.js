@@ -12,7 +12,6 @@ import {
 import axios from "axios";
 import { URL } from "../../../config/config.js";
 axios.defaults.baseURL = URL;
-// axios.defaults.baseURL = "http://172.17.0.2:3000/";
 
 class AddBook extends Component {
   constructor(props) {
@@ -89,8 +88,6 @@ const styles = StyleSheet.create({
     fontSize: 28
   },
   input: {
-    // textAlign: "center",
-    // width: "100%",
     paddingLeft: 5,
     borderColor: "gray",
     borderWidth: 1,

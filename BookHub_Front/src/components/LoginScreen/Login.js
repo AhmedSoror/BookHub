@@ -12,8 +12,7 @@ import {
 } from "react-native";
 import { userLogin } from "../../store/actions/index";
 import axios from "axios";
-// axios.defaults.baseURL = "http://172.17.0.2:3000/";
-import { URL } from "../../../config/config.js";
+import { URL, GOOGLE_KEY } from "../../../config/config.js";
 axios.defaults.baseURL = URL;
 
 class Login extends Component {
@@ -24,8 +23,7 @@ class Login extends Component {
   async userLogin() {
     try {
       const { type, accessToken, user } = await Google.logInAsync({
-        androidClientId:
-          "869039466780-d7a4t533o0iqq8s38lkcanekp2djj8f6.apps.googleusercontent.com"
+        androidClientId: GOOGLE_KEY
       });
       if (type === "success") {
         const payLoad = {
@@ -38,12 +36,11 @@ class Login extends Component {
         };
         axios
           .post("/users", payLoad)
-          .then(async (response) => {
-            // console.log("login 42 response: ", response.data);
+          .then(async response => {
+            
             await this.props.userLogin(response.data);
-            // console.log("login 42 response: ", this.props.user);
+            
             this.props.navigation.navigate("HomeScreen");
-
           })
           .catch(error => {
             console.log(`all books error: ${error}`);
@@ -54,30 +51,9 @@ class Login extends Component {
     }
   }
 
-  
   render() {
     return (
       <View style={styles.inputContainer}>
-        {/* <Button
-            iconRight={false}
-            title="Log in with Google Account"
-            style={styles.loginButton}
-            onPress={this.userLogin.bind(this)}
-            ref={input => (this.btnLogin = input)}
-          /> */}
-        {/* <TouchableOpacity
-          style={styles.FacebookStyle}
-          activeOpacity={0.5}
-          onPress={this.userLogin.bind(this)}
-        >
-          <Image
-            source={require("../../../assets/facebook_login.png")}
-            style={styles.ImageIconStyle}
-          />
-          <View style={styles.SeparatorLine} />
-          <Text style={styles.TextStyle}> Login Using Facebook </Text>
-        </TouchableOpacity> */}
-
         <TouchableOpacity
           style={styles.GooglePlusStyle}
           activeOpacity={0.5}
@@ -113,16 +89,6 @@ const styles = StyleSheet.create({
   loginButton: {
     width: "30%",
     color: "#841584"
-  },
-  FacebookStyle: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#485a96",
-    borderWidth: 0.5,
-    borderColor: "#fff",
-    height: 40,
-    borderRadius: 5,
-    margin: 5
   },
   GooglePlusStyle: {
     flexDirection: "row",
