@@ -34,11 +34,6 @@ const AppNavigationContainer = createAppContainer(
     }
   )
 );
-// const AuthenticationNavigator = createStackNavigator({
-//   SignIn: SignInScreen,
-//   ForgotPassword: ForgotPasswordScreen,
-// });
-
 const AppNavigator = createSwitchNavigator(
   {
     Login: AuthStack,
@@ -46,7 +41,6 @@ const AppNavigator = createSwitchNavigator(
   },
   {
     initialRouteName: "Login"
-    // initialRouteName: "HomeScreen"
   }
 );
 
@@ -57,14 +51,4 @@ class App extends Component {
     return <AppContainer />;
   }
 }
-
-
-// const mapStateToProps = state =>{
-//   return {
-
-//   };
-// };
-
-// export default connect()(App);
-
 export default App;
