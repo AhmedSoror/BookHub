@@ -19,3 +19,6 @@ Expo is used to create the application. To run the application use the command "
 
 # You can download the apk from:
 https://drive.google.com/open?id=16qD3I77FunyLrso0gQUS4e0mqiLOyfTB
+
+# Or just scan this code 
+https://expo.io/@ahemdsoror/BookHub
